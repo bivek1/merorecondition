@@ -1,0 +1,154 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+<!-- top Box -->
+    <div class="row">
+        <div class="searchBox row ps-2 pe-2 pt-2 pb-2">
+            <div class="col-md-10 col-6 d-flex">
+                
+                <input type="text" name="" id="" class="form-control ps-2 d-inline w-60" placeholder="Search For Anything">
+            </div>
+            <div class="col-md-2 col-6">
+                <span class="p-2" style="cursor:pointer;">
+                    <i class="fa fa-blog"></i> Blog
+                </span>
+               
+                <span class="p-2" style="cursor:pointer;">
+                
+                    <i class="fa fa-money-bill"></i> Earn
+                  
+                </span>
+                
+            </div>
+        </div>
+        <div class="col-12 col-md-2" >
+            <div class="catFV p-3">
+                <h6>All Categories</h6>
+                <hr>
+                {% for i in category  %}
+                    <div class="catBox mt-2 d-flex">
+                        <img src="{{i.image.url}}" alt="{{i.name}}" srcset="">
+                        <h6 class="my-auto ps-2">{{i.name}}</h6>
+                    </div>
+    
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-12 col-md-8">
+            <div class="row popBox p-2 m-0">
+                <h6>Popular Reconditions</h6>
+                    
+                {% for i in rec  %}
+                <div class="col-12 col-md-4 p-2">
+                    <div class="hrecBox d-flex">
+                        
+                        {% if i.profile_pic %}
+                            <img src="{{i.profile_pic.url}}" alt="{{i.recondition_name}">
+                        {%else%}
+                            <img class="opacity-7" src="{%static 'img/logo.png'%}" alt="{{i.recondition_name}">
+                        {% endif %}
+                            <div class="data p-2">
+                                <h6 class="m-0 p-0">{{i.recondition_name|truncatewords:4}}</h6>
+                                <!-- <hr class="m-0 p-0 bg-secondary w-10"> -->
+                                <p class="p-0 m-0"><i class="fa fa-phone"></i> {{i.number}}</p>
+                                <p class="p-0 m-0"><i class="fa fa-location"></i> {{i.Temporary_address}}</p>
+                                
+                            </div>
+                        
+                    </div>
+                </div> 
+                {% endfor %}
+              
+            </div>
+        </div>
+        <div class="col-md-2 pt-2">
+            <div class="earnBox p-2 text-center">
+                <i class="fa fa-money-bill" style="font-size: 50px;"></i>
+                <hr>
+                <h6 class="pt-1">
+                    Earn Money From merorecondition.com
+                </h6>
+                <hr>
+                <div class="d-flex ps-2 pe-2" style="justify-content:space-between;">
+                    <div class="p-2">
+                        <a href="{%url 'recon:about'%}">
+                            <p class="text-dark-30 bg-light p-1">
+                                <i class="fa fa-info "></i>
+                                About
+                            </p>
+                        </a>
+                      
+                    </div>
+                    <div class="p-2">
+                        <a href="{%url 'recon:contact'%}">
+                            <p class="text-dark-30 bg-light p-1">
+                                <i class="fa fa-phone "></i>
+                                Contact
+                            </p>
+                        </a>
+                       
+                    </div>
+                    
+                </div>
+                <p class="p-0 m-0">
+                    <a href="{%url 'recon:allHouse'%}">
+                        <i class="fa fa-house-signal"></i>   
+                        Recondition Houses
+                    </a>
+                </p>
+               
+            </div>
+        </div>
+             
+        <div class="col-12 pt-2">
+            <div class="row p-0 m-0">
+                <h5>Latest Vehicle</h5>
+                {% for i in lastest %}
+                    <div class="col-md-4 col-lg-3 col-6 pt-3">
+                        <a href="{%url 'recon:vehicleD' i.id%}">
+                            <div class="vehicleBox d-flex">
+                                <img src="{{i.image.url}}" alt="{{i.name}}">
+                                <div class="p-1">
+                                    <p class="p-0 m-0">{{i.name|truncatewords:8}}</p>
+                                    <h6 class="p-0 m-0">Rs.{{i.showing_price}}</h6>
+                                    <small style="opacity:.8;">Ran: {{i.run_km}}</small>
+                                    <small class="d-block" style="opacity:.8;">{{i.modal}} Modal</small>
+                                </div>
+                                
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+               
+            </div>
+        </div>
+       
+    </div>
+<!-- Top Box end -->
+
+<!-- Below Box Hot Sale -->
+    <div class="row mt-3">
+        <h4>Hot Sale</h4>
+        {% for i in hot  %}
+            <div class="col-md-3 col-lg-2 col-6 pt-4">
+                <a href="{%url 'recon:vehicleD' i.id%}">
+                    <div class="vBox">
+                        <img src="{{i.image.url}}" alt="{{i.name}}">
+                        <div class="p-1">
+                            <p class="p-0 m-0">{{i.name|truncatewords:8}}</p>
+                            <h6 class="p-0 m-0">Rs.{{i.showing_price}}</h6>
+                            <small style="opacity:.8;">Ran: {{i.run_km}}</small>
+                            <small class="d-block" style="opacity:.8;">{{i.modal}} Modal</small>
+                        </div>
+                    </div>
+                </a>
+            </div>   
+        {% endfor %}
+            
+        
+    </div>
+<!-- Hot Sale end -->
+
+
+{% endblock content %}
+    

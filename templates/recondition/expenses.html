@@ -1,0 +1,78 @@
+{% extends 'recondition/homepage.html' %}
+
+{% block title %}
+    Total Expenses
+{% endblock title %}
+
+
+{% block pages %}
+    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{%url 'recond:homepage'%}">Dashboard</a></li>
+        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Expenses</li>
+    </ol>
+{% endblock pages %}
+    
+
+{% block content %}
+    <div class="container-fluid py-4">
+        {% if messages %}
+            {%for i in messages%}
+                <div class="alert alert-light alert-dismissible fade show" role="alert">
+                    {{i}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {%endfor%}
+        {% endif %}  
+        <h5>Total Expenses</h5>
+        <hr>
+        <form action="" method="post">
+            {{form}}
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary mt-2">
+                Add Expenses
+            </button>
+        </form>
+        <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <h6 class="p-2">Expenses: Rs. {{cost.cost__sum}}</h6>
+                <div class="card-body px-0 pb-2">
+                  <div class="table-responsive p-2">
+                    <table class="table align-items-center justify-content-center mb-0">
+                      <thead>
+                        <tr>
+                          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Reason</th>
+                          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Cost</th>
+                          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date</th>
+                                                
+                        </tr>
+                      </thead>
+                      <tbody>
+                        
+                        {% for i in expenses  %}
+                        <tr class="ps-2">
+                            <td>
+                              <h6 class="mb-0 text-sm">{{i.reason}}</h6>
+                            </td>
+                            <td>
+                              <p class="text-sm font-weight-bold mb-0">Rs. {{i.cost}}</p>
+                            </td>
+                            <td>
+                              <span class="text-xs font-weight-bold">{{i.date}}</span>
+                            </td>
+                           
+                         
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+   
+{% endblock content %}
+    
+    

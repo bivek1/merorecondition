@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        
+        {% block title %}
+            Mero Recondition. We deal with all types of vehicle
+        {% endblock title %}
+            
+    </title>
+    <link rel="stylesheet" href="{%static 'css/style.css'%}">
+    <!-- <link id="pagestyle" href="{%static 'assets/css/material-dashboard.css' %} " rel="stylesheet" /> -->
+   
+    {% block seo %}
+        
+    {% endblock seo %}
+    <style>
+        .form-control{
+          border: 1px solid white;
+          background-color: white;
+          color: #495057;
+          padding-left: 10px;
+        }
+        .form-control:focus {
+          color: #495057;
+          background-color: white;
+          border-color: rgb(181, 181, 181);
+          outline: 0;
+          box-shadow: none;
+        }
+        .card{
+          cursor: pointer;
+        }
+        .card:hover{
+          background-color: #f1f1f1;
+        }
+        .navbar-vertical.navbar-expand-xs .navbar-collapse{
+          height: auto!important;
+        }
+      </style>
+      <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body >
+  {% block navbar %}
+  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand ps-2" href="{%url 'recon:homepage'%}">
+          <img src="{%static 'img/logo.png'%}" alt="Mero Recondition" srcset="">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+          <ul class="navbar-nav m-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              {%url 'recon:homepage' as home%}
+              <a class="nav-link {%if request.path == home%}active{%endif%}" aria-current="page" href="{{home}}">
+                <i class="fa fa-tachometer-alt"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              {%url 'recon:allVehicle' as allVehicle%}
+              <a class="nav-link {%if request.path == allVehicle%}active{%endif%}" href="{{allVehicle}}">
+                <i class="fa fa-motorcycle"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              {%url 'recon:allHouse' as allHouse%}
+              <a class="nav-link {%if request.path == allHouse%}active{%endif%}" href="{{allHouse}}">
+                <i class="fa fa-house-signal"></i>   
+              </a>
+            </li>
+            <!-- <li class="nav-item">
+              <a class="nav-link" href="#">
+                <i class="fa fa-money-bill"></i> 
+              </a>
+            </li> -->
+            <!-- <li class="nav-item">
+              {%url 'recon:about' as about%}
+              <a class="nav-link {%if request.path == about%}active{%endif%}" href="{{about}}">About</a>
+            </li>
+
+            <li class="nav-item">
+              {%url 'recon:contact' as contact%}
+              <a class="nav-link {%if request.path == contact%}active{%endif%}" href="{{contact}}">Contact Us</a>
+            </li> -->
+          </ul>
+          {%url 'recon:login' as login%}
+          <a class="{%if request.path == login%}active{%endif%}" href="{%url 'recon:login'%}">
+              <i class="fa fa-sign-in"></i>
+              <span class="navbar-text {%if request.path == login%}active{%endif%}">
+                  Login
+              </span>
+          </a>
+        
+        </div>
+      </div>
+  </nav>   
+  <div class="maintain" style="height: 70px;">
+
+  </div>
+  {% endblock navbar %}
+    <div class="container-fluid m-0" >   
+        {% block content %}
+       
+        {% endblock content %}
+    </div>
+   
+        
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</html>

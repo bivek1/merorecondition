@@ -1,0 +1,208 @@
+/* Homepage Design Landing page design */
+a{
+    text-decoration: none!important;
+
+    color: inherit!important;
+}
+h1,h2,h3,h4,h5,h6{
+    color: rgb(97, 97, 97)!important;
+}
+h6{
+    font-size: 16px!important;
+}
+p{
+    color: rgb(66, 66, 66)!important;
+    font-size: 14px!important;
+}
+h6{
+    font-size: 15px!important;
+}
+.navbar-brand img{
+    height: 40px;
+}
+.nav-link{
+    font-size: 20px;
+    font-family: sans-serif;
+    color:rgb(97, 97, 97);
+    
+}
+.active{
+    color: rgba(212, 70, 70, 0.838)!important;
+}
+.catBox{
+    height: 40px;
+    width: 100%;
+    cursor: pointer;
+    background-color: white;
+    overflow: auto;
+    border-radius: 5px;
+    box-shadow: 0 5px 5px 0 rgba(61, 61, 61, 0.2), 0 5px 20px 0 rgba(98, 98, 98, 0.19);
+}
+.catBox:hover{
+    transition-duration: .3s;
+    box-shadow: 0 18px 18px 0 rgba(61, 61, 61, 0.2), 0 16px 40px 0 rgba(98, 98, 98, 0.19);
+}
+.catBox:hover h6{
+    transition-duration: .4s;
+    color: rgb(152, 4, 4);
+}
+.catBox img{
+    height: 100%;
+    width: 30%;
+
+}
+.catFV{
+    background-color: rgb(245, 245, 245);
+}
+.popBox{
+    background-color: rgb(250, 250, 250);
+ 
+}
+
+.vehicleBox{
+    height: auto;
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    background-color: white;
+    box-shadow: 0 18px 18px 0 rgba(206, 206, 206, 0.2), 0 16px 40px 0 rgba(217, 217, 217, 0.19);
+    cursor: pointer;
+}
+
+.vehicleBox img{
+    height: 110px;
+    width: 50%;
+
+}
+
+.vBox{
+    height: 200px;
+    width: 100%;
+    background-color: white;
+    opacity: .9;
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 18px 18px 0 rgba(229, 229, 229, 0.2), 0 16px 40px 0 rgba(229, 229, 229, 0.19);
+}
+.vBox:hover{
+    box-shadow: 0 18px 28px 0 rgba(216, 216, 216, 0.2), 0 26px 40px 0 rgba(213, 213, 213, 0.19);
+}
+.vBox img{
+    height: 50%;
+    width: 100%;
+
+}
+
+/* Recondition Details */
+.houseBox{
+    height: 200px;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0 18px 18px 0 rgb(0 0 0 / 20%), 0 16px 40px 0 rgb(0 0 0 / 19%);
+}
+
+.houseBox img{
+    height: 100%;
+    width: 50%;
+}
+
+.hrecBox{
+    height: 120px;
+    width: 100%;
+    cursor: pointer;
+    opacity: .9;
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 18px 18px 0 rgba(229, 229, 229, 0.2), 0 16px 40px 0 rgba(229, 229, 229, 0.19);
+}
+.hrecBox:hover{
+    transition-duration: .2;
+    box-shadow: 0 5px 5px 0 rgba(183, 183, 183, 0.2), 0 5px 20px 0 rgba(169, 169, 169, 0.19);
+}
+.hrecBox img{
+    height: 100%;
+    width: 50%;
+    border-radius: 15px;
+}
+.data p{
+   font-size: 12px; 
+}
+.earnBox{
+    height: 280px;
+    width: 100%;
+    cursor: pointer;
+    background-color: white;
+    box-shadow: 0 18px 18px 0 rgb(0 0 0 / 20%), 0 16px 40px 0 rgb(0 0 0 / 19%); 
+}
+
+.topBox{
+    background-color: white;
+   
+}
+.searchBox{
+    height: 50px;
+    width: 100%;
+    background-color: white;
+
+}
+
+/* Login page */
+.form-control {
+    border-radius: 13px!important;
+    color: rgb(45, 45, 45)!important;
+    height: 30px!important;
+}
+.loginBox{
+    background-color: white;
+    box-shadow: 0 18px 18px 0 rgb(0 0 0 / 20%), 0 16px 40px 0 rgb(0 0 0 / 19%);
+    border-radius: 10px;
+}
+
+
+/* Order Page */
+.vechileOrder{
+    background-color: white;
+    box-shadow: 0 18px 18px 0 rgba(193, 193, 193, 0.2), 0 16px 40px 0 rgba(193, 193, 193, 0.19);
+    border-radius: 10px;   
+}
+.vechileOrder img{
+    height: 200px;
+    width: 50%;
+}
+.orderbox{
+    background-color: white;
+    box-shadow: 0 18px 18px 0 rgba(193, 193, 193, 0.2), 0 16px 40px 0 rgba(193, 193, 193, 0.19);
+    border-radius: 10px;   
+}
+.h1,h2,h3,h4,h5,h6{
+    font-family: sans-serif;
+}
+
+.productDiv{
+    height: auto;
+    width: 100%;
+    background-color: white;
+    box-shadow: rgb(211, 211, 11);
+}
+.productDiv img{
+    height: auto;
+    width: 100%;
+}
+.reconditionShow img{
+    width: 100%;
+    height: auto;
+}
+
+.housesBox{
+    width: 100%;
+    height: 150px;
+    background-color: white;
+    cursor: pointer;
+}
+.housesBox img{
+    width: 50%;
+    height: 100%;
+
+}

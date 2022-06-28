@@ -1,0 +1,144 @@
+
+{% extends 'dashbord/dashboard.html' %}
+{% load static %}
+
+{% block aside %}
+<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
+  <div class="sidenav-header">
+    <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+    <a class="navbar-brand m-0" href="{%url 'recon:homepage'%}" target="_blank">
+      <img src="{%static 'img/dashboard_logo.png' %} " class="navbar-brand-img h-100" alt="main_logo">
+      <span class="ms-1 font-weight-bold text-white">Mero Recondition</span>
+    </a>
+  </div>
+  <hr class="horizontal light mt-0 mb-2">
+  <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        {%url 'recond:homepage' as homepage%}
+        <a class="nav-link text-white {%if request.path == homepage%} active bg-gradient-primary {%endif%}" href="{%url 'recond:homepage'%}">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="material-icons opacity-10">dashboard</i>
+          </div>
+          <span class="nav-link-text ms-1">Owner Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        {%url 'recond:vehicle' as homepage%}
+        {%url 'recond:addvehicle' as addhomepage%}
+        {%url 'recond:editvehicle' as editvehicle%}
+        <a class="nav-link text-white {%if request.path == homepage%} active bg-gradient-primary {%endif%}  {%if request.path == addhomepage%} active bg-gradient-primary {%endif%} {%if request.path == editvehicle%} active bg-gradient-primary {%endif%}" href="{%url 'recond:vehicle'%}">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="material-icons opacity-10">table_view</i>
+          </div>
+          <span class="nav-link-text ms-1">Vehicle</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        {%url 'owner:reconditon' as homepage%}
+        <a class="nav-link text-white  {%if request.path == homepage%} active bg-gradient-primary {%endif%}" href="{{homepage}}">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="material-icons opacity-10">receipt_long</i>
+          </div>
+          <span class="nav-link-text ms-1">Recondition</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        {%url 'recond:sale' as homepage%}
+        <a class="nav-link text-white {%if request.path == homepage%} active bg-gradient-primary {%endif%} " href="{{homepage}}">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="material-icons opacity-10">view_in_ar</i>
+          </div>
+          <span class="nav-link-text ms-1">Total Sales</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        {%url 'recond:purchase' as homepage%}
+        <a class="nav-link text-white {%if request.path == homepage%} active bg-gradient-primary {%endif%}" href="{{homepage}}">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
+          </div>
+          <span class="nav-link-text ms-1">Total Purchase</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        {%url 'recond:report' as homepage%}
+        <a class="nav-link text-white {%if request.path == homepage%} active bg-gradient-primary {%endif%} " href="{{homepage}}">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
+          </div>
+          <span class="nav-link-text ms-1">Report</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        {%url 'recond:order' as homepage%}
+        <a class="nav-link text-white {%if request.path == homepage%} active bg-gradient-primary {%endif%}" href="{{homepage}}">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="material-icons opacity-10">notifications</i>
+          </div>
+          <span class="nav-link-text ms-1">Orders</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        {%url 'recond:comment' as homepage%}
+        <a class="nav-link text-white {%if request.path == homepage%} active bg-gradient-primary {%endif%}" href="{{homepage}}">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="material-icons opacity-10">notifications</i>
+          </div>
+          <span class="nav-link-text ms-1">Comments</span>
+        </a>
+      </li>
+      <li class="nav-item mt-3">
+        <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white " href="../pages/profile.html">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="material-icons opacity-10">person</i>
+          </div>
+          <span class="nav-link-text ms-1">Profile</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white " href="../pages/profile.html">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="material-icons opacity-10">person</i>
+          </div>
+          <span class="nav-link-text ms-1">My Recondition</span>
+        </a>
+      </li>
+      
+      {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link text-white " href="../pages/sign-in.html">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">logout</i>
+            </div>
+            <span class="nav-link-text ms-1">Logout</span>
+          </a>
+        </li>
+     
+      {% endif %}
+        
+    
+      <li class="nav-item">
+        <a class="nav-link text-white " href="../pages/sign-up.html">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="material-icons opacity-10">assignment</i>
+          </div>
+          <span class="nav-link-text ms-1">Sign Up</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+</aside>
+{% endblock aside %}
+
+{% block pages %}
+<ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+  <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
+  <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Owner Dashboard</li>
+</ol>
+{% endblock pages %}
+    

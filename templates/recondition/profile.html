@@ -1,0 +1,70 @@
+{% extends 'recondition/homepage.html' %}
+
+{% block title %}
+    {{user.first_name}} {{user.last_name}}
+{% endblock title %}
+
+
+{% block pages %}
+    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{%url 'recond:homepage'%}">Dashboard</a></li>
+        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Profile</li>
+    </ol>
+{% endblock pages %}
+    
+
+{% block content %}
+
+    <div class="container-fluid py-4">
+        
+        {% if messages %}
+            {%for i in messages%}
+                <div class="alert alert-light alert-dismissible fade show" role="alert">
+                    {{i}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {%endfor%}
+        {% endif %}
+            
+        <h5>Your Profile</h5>
+        <hr>
+        <div class="row">
+            <div class="col-12 col-md-3 text-center p-3 my-auto" style="background-color: white;">
+                <i class="fa fa-user" style="font-size:40px;"></i>
+                
+                {% if user.user_type == 'recondition' %}
+                    <h5 class="text-success">Recondition User</h5>
+                {% endif %}
+                    
+            </div>
+            <div class="col-12 col-md-9 p-2">
+                <form action="" method="post"  enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-6 col-md-6 p-2">
+                           <label for="first_name">First Name</label>
+                           <input class="form-control" type="text" name="first_name" value="{{user.first_name}}">
+                        </div>    
+                        <div class="col-6 col-md-6 p-2">
+                            <label for="last_name">Last Name</label>
+                            <input class="form-control" type="text" name="last_name" value="{{user.last_name}}">
+                        </div> 
+                        <div class="col-12 col-md-12 p-2">
+                            <label for="email">Email</label>
+                            <input class="form-control" type="email" name="email" value="{{user.email}}">
+                         </div>       
+                         {% csrf_token %}
+                         <button class="mt-2 btn btn-primary"> 
+                            Update Profile
+                         </button>
+                
+                    </div>
+                   
+                </form>
+            </div>
+        </div>        
+      
+    </div>
+   
+{% endblock content %}
+    
+    

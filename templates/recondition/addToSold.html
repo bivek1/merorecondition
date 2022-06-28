@@ -1,0 +1,63 @@
+{% extends 'recondition/homepage.html' %}
+
+{% block title %}
+    Selling {{vehicle.name}}
+{% endblock title %}
+
+
+{% block pages %}
+    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{%url 'recond:homepage'%}">Dashboard</a></li>
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{%url 'recond:vehicle'%}">Vehicle</a></li>
+        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Selling Vehicle</li>
+    </ol>
+{% endblock pages %}
+    
+
+{% block content %}
+
+    <div class="container-fluid py-4">
+        {% if messages %}
+            {%for i in messages%}
+                <div class="alert alert-light alert-dismissible fade show" role="alert">
+                    {{i}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {%endfor%}
+        {% endif %}  
+        <h5>Congratulation for selling {{vehicle.name}}</h5>
+        <hr>
+        <div class="row">  
+            <div class="col-12">
+                <div class="card h-100">
+                  <div class="card-header pb-0">
+                    <h6></h6>
+                    <p class="text-sm">
+               
+                      <span class="font-weight-bold">Add Selling Price And Date</span> 
+                    </p>
+                  </div>
+                  <div class="card-body p-3">
+                   
+                    <div class="modal-body">
+                        <form action="" method="post">
+                          <label for="date">Sold Date</label>
+                          <input type="date" class="form-control" name="{{i.id}}date" style="border:1px solid black;">
+                          <label for="price">Selling Price</label>
+                          <input type="number" class="form-control" name = "{{i.id}}price" placeholder="1400000" style="border:1px solid black;">
+                          {% csrf_token %}
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Confirm</button>
+                        </div>
+                        </form>
+                      </div>
+                     
+                  </div>
+                </div>
+              </div>  
+        </div>          
+    </div>
+   
+{% endblock content %}
+    
+    

@@ -1,0 +1,110 @@
+{% extends 'owner/homepage.html' %}
+
+{% block title %}
+    Add Recondition
+{% endblock title %}
+
+
+{% block pages %}
+    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{%url 'owner:homepage'%}">Dashboard</a></li>
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{%url 'owner:reconditon'%}">Recondition</a></li>
+        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Add Recondition</li>
+    </ol>
+{% endblock pages %}
+    
+
+{% block content %}
+
+    <div class="container-fluid py-4">
+        
+        {% if messages %}
+            {%for i in messages%}
+                <div class="alert alert-light alert-dismissible fade show" role="alert">
+                    {{i}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {%endfor%}
+        {% endif %}
+            
+        <h5>Add Recondition</h5>
+        <hr>
+
+        <form action="" method="post"  enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-6 col-md-6 p-2">
+                    {{nform.first_name.label}}
+                    {{nform.first_name}}
+                    {{nform.first_name.errors}}
+                </div>      
+                
+                <div class="col-6 col-md-6 p-2">
+                    {{nform.last_name.label}}
+                    {{nform.last_name}}
+                    {{nform.last_name.errors}}
+                </div>   
+                <div class="col-12 col-md-6 p-2">
+                    {{nform.email.label}}
+                    {{nform.email}}
+                    {{nform.email.errors}}
+                </div>   
+
+                <div class="col-12 col-md-6 p-2">
+                    {{nform.password.label}}
+                    {{nform.password}}
+                    {{nform.password.errors}}
+                </div>   
+
+                <div class="col-12 col-md-6 p-2">
+                    {{form.recondition_name.label}}
+                    {{form.recondition_name}}
+                    {{form.recondition_name.errors}}
+                </div>   
+
+                <div class="col-12 col-md-6 p-2">
+                    {{form.number.label}}
+                    {{form.number}}
+                    {{form.number.errors}}
+                </div>   
+
+                <div class="col-12 col-md-6 p-2">
+                    {{form.Temporary_address.label}}
+                    {{form.Temporary_address}}
+                    {{form.Temporary_address.errors}}
+                </div>   
+
+                <div class="col-12 col-md-6 p-2">
+                    {{form.District.label}}
+                    {{form.District}}
+                    {{form.District.errors}}
+                </div>   
+
+
+                <div class="col-6 col-md-6 p-2">
+                    {{form.expire_on.label}}
+                    {{form.expire_on}}
+                    {{form.expire_on.errors}}
+                </div>   
+
+                <div class="col-6 col-md-6 p-2">
+                    {{form.verified.label}}
+                    {{form.verified}}
+                    {{form.verified.errors}}
+                </div>   
+
+                <div class="col-12 col-md-12 p-2">
+                    {{form.profile_pic.label}}
+                    {{form.profile_pic}}
+                    {{form.profile_pic.errors}}
+                </div>   
+            </div>
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">
+                Add Recondition
+            </button>
+        </form>
+    </div>
+   
+{% endblock content %}
+    
+    

@@ -1,0 +1,71 @@
+{% extends 'recondition/homepage.html' %}
+
+{% block title %}
+    {{rec.recondition_name}}
+{% endblock title %}
+
+
+{% block pages %}
+    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{%url 'recond:homepage'%}">Dashboard</a></li>
+        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Recondition Profile</li>
+    </ol>
+{% endblock pages %}
+    
+
+{% block content %}
+
+    <div class="container-fluid py-4">
+        
+        {% if messages %}
+            {%for i in messages%}
+                <div class="alert alert-light alert-dismissible fade show" role="alert">
+                    {{i}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {%endfor%}
+        {% endif %}
+            
+        <h5>Your Profile</h5>
+        <hr>
+        <div class="row">
+            <div class="col-12 col-md-3 text-center my-auto p-0" style="background-color: white;">
+                <img src="{{rec.profile_pic.url}}" alt="{{rec.recondition_name}}" srcset="" style="height:200px; width: 100%;">
+                <h5>{{rec.recondition_name}}</h5>
+                    
+            </div>
+            <div class="col-12 col-md-9 ps-3 pe-3">
+                <form action="" method="post"  enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-6 col-md-6 p-2">
+                          {{form.recondition_name}}
+                        </div>    
+                        <div class="col-6 col-md-6 p-2">
+                            {{form.number}}
+                        </div>  
+                        <div class="col-6 col-md-6 p-2">
+                            {{form.Temporary_address}}
+                        </div>  
+                        <div class="col-6 col-md-6 p-2">
+                            {{form.District}}
+                        </div>
+                        <div class="col-12 col-md-12 p-2">
+                            {{form.profile_pic}}
+                        </div>    
+                       
+                        {% csrf_token %}
+                        <button class="mt-2 btn btn-primary"> 
+                        Update Profile
+                        </button>
+                
+                    </div>
+                   
+                </form>
+            </div>
+        </div>        
+      
+    </div>
+   
+{% endblock content %}
+    
+    

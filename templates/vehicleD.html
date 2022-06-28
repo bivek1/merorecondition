@@ -1,0 +1,73 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    {{vehicle.name}}
+{% endblock title %}
+
+
+{% block content %}
+    <div class="productDiv mt-4">
+        <div class="row">
+            <div class="col-md-6 col-12">
+                <img src="{{vehicle.image.url}}" alt="{{vehicle.name}}" srcset="">
+            </div>
+            <div class="col-md-6 col-12">
+                <h5>{{vehicle.name}}</h5>
+                <h6>Rs.{{vehicle.showing_price}}</h6>
+                <p>Run: {{vehicle.run_km}}</p>
+                <p>Insurance: {{vehicle.insurance}}</p>
+                <p>Plate No. {{vehicle.plate_no}}</p>
+               
+                <button class="btn btn-secondary">
+                    Contact Recondition
+                </button>
+                <a href="{%url 'recon:order' vehicle.id%}">
+                    <button class="btn btn-danger">
+                        Order {{vehicle.type}}
+                    </button>
+                </a>
+                <hr>
+                <small>
+                    {{vehicle.remarks}}
+                </small>
+            </div>
+            <div class="col-md-9 col-12">
+                <h6>Add Comment</h6>
+                <hr>
+                
+                {% for i in comment  %}
+                
+                    {% if i.user %}
+                    <h6>{{i.user.first_name}} {{i.user.last_name}}</h6>
+                    {%else%}
+                    <h6>Anoynomous</h6>
+                    {% endif %}
+                    <p>{{i.comment}}</p>
+                        
+                {% endfor %}
+                    
+                <form action="" method="post">
+                    <input type="text" class="form-control" placeholder="Add Your Comments...." name = "comment">
+               
+                    {% csrf_token %}
+                    <button class="btn btn-primary mt-2" type="submit">Add Comment</button>
+                </form>
+                
+            </div>
+            <div class="col-md-3 col-12">
+                <div class="reconditionShow">
+                    {% if vehicle.user.recondition %}
+                    <h6>{{vehicle.user.recondition.recondition_name}}</h6>
+                    <img src="{{vehicle.user.recondition.profile_pic.url}}" alt="{{vehicle.user.recondition.recondition_name}}">
+                    {% endif %}
+                    <p>Contact : {{vehicle.user.recondition.number}}</p>
+                    <p>Address : {{vehicle.user.recondition.Temporary_address}}</p>
+                </div>
+               
+                    
+                
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+    

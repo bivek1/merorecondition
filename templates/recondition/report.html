@@ -1,0 +1,268 @@
+{% extends 'recondition/homepage.html' %}
+
+{% block title %}
+   Gross Report 
+{% endblock title %}
+
+
+{% block pages %}
+    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{%url 'recond:homepage'%}">Dashboard</a></li>
+        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Gross Report</li>
+    </ol>
+{% endblock pages %}
+    
+
+{% block content %}
+
+    <div class="container-fluid py-4">
+        
+        {% if messages %}
+            {%for i in messages%}
+                <div class="alert alert-light alert-dismissible fade show" role="alert">
+                    {{i}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {%endfor%}
+        {% endif %}  
+        <div class="dateBox">
+            <small>Choose Your Date:</small>
+            <form action="" method="post">
+              <div class="row">
+                  <div class="col-12 col-md-6 p-2">
+                    <label for="start"> Start Date</label>
+                    <input type="date" class="form-control" name = "start" value="{{start}}">
+                  </div>
+                  <div class="col-12 col-md-6 p-2">
+                    <label for="end"> End Date</label>
+                    <input type="date" class="form-control" name = "end" value="{{end}}">
+                  </div>
+                  {% csrf_token %}
+                  
+                  <button class="btn btn-primary">
+                    Filter
+                  </button>
+              </div>
+             
+             
+            </form>
+          </div>
+        <h5>Gross Report</h5>
+        <h6>Total Purchase: Rs. {{total_purchase.cost_price__sum}}</h6>
+        <h6>Total Sale: Rs. {{total_sale.sold_price__sum}}</h6>
+        <h6>Total Expenses: Rs.{{total_expenses.cost__sum}}</h6>
+        <h6>Total Maintainance Cost: Rs. {{total_maintainace.maintainance_cost__sum}}</h6>
+        <hr>
+
+        <div class="purchaseReport">
+            <div class="col-12">
+                <div class="card">
+                  <div class="card-body px-0 pb-2">
+                    <div class="table-responsive p-2">
+                      <h6>Total Purchase: Rs. {{total_purchase.cost_price__sum}}</h6>
+                      <table class="table align-items-center justify-content-center mb-0">
+                        <thead>
+                          <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Cost Price</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Plate No.</th>
+                            <th class="text-uppercase text-danger text-xxs font-weight-bolder opacity-7 ps-2">Purchase Date</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Maintainance Cost</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Showing Price</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Sold</th>
+    
+                          </tr>
+                        </thead>
+                        <tbody>
+                          
+                          {% for i in purchase  %}
+                          <tr class="ps-2">
+                              <td>
+                                <h6 class="mb-0 text-sm">{{i.name}}</h6>
+                              </td>
+                              <td>
+                                <p class="text-sm font-weight-bold mb-0">Rs. {{i.cost_price}}</p>
+                              </td>
+                              <td>
+                                <span class="text-xs font-weight-bold">{{i.plate_no}}</span>
+                              </td>
+                              <td>
+                                <span class="text-xs font-weight-bold text-danger">{{i.purchase_date}}</span>
+                              </td>
+                              <td>
+                                <span class="text-xs font-weight-bold">{{i.maintainance_cost}}</span>
+                              </td>
+                              <td>
+                                <span class="text-xs font-weight-bold">{{i.showing_price}}</span>
+                              </td>
+                              <td>
+                                <span class="text-xs font-weight-bold">{%if i.sold_status%} Sold {%else%} In House {%endif%}</span>
+                              </td>
+                             
+                            </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="maintananceReport">
+            <div class="col-12">
+                <div class="card">
+                  <div class="card-body px-0 pb-2">
+                    <div class="table-responsive p-2">
+                      <h6>Total Maintainance Cost: Rs. {{total_maintainace.maintainance_cost__sum}}</h6>
+                      <table class="table align-items-center justify-content-center mb-0">
+                        <thead>
+                          <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+                    
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Plate No.</th>
+
+                            <th class="text-uppercase text-danger text-xxs font-weight-bolder opacity-7 ps-2">Maintainance Cost</th>
+
+    
+                          </tr>
+                        </thead>
+                        <tbody>
+                          
+                          {% for i in purchase  %}
+                          
+                            {% if i.maintainance_cost %}
+                            <tr class="ps-2">
+                              <td>
+                                <h6 class="mb-0 text-sm">{{i.name}}</h6>
+                              </td>
+                          
+                              <td>
+                                <span class="text-xs font-weight-bold">{{i.plate_no}}</span>
+                              </td>
+                          
+                              <td>
+                                <span class="text-xs font-weight-bold text-danger">{{i.maintainance_cost}}</span>
+                              </td>
+                        
+                            
+                          </tr>
+                          {% endif %}
+                            
+                           
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <br>
+
+        <div class="salesReport">
+            <div class="col-12">
+                <div class="card">
+                  <div class="card-body px-0 pb-2">
+                    <div class="table-responsive p-2">
+                      <h6>Total Sale: Rs. {{total_sale.sold_price__sum}}</h6>
+                      
+                      <table class="table align-items-center justify-content-center mb-0">
+                        <thead>
+                          <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Cost Price</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Plate No.</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Purchase Date</th>
+                            <th class="text-uppercase text-primary text-xxs font-weight-bolder  ps-2">
+                              <b>Sold Date</b></th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Sold Price</th>
+                            <th class="text-uppercase text-primary text-xxs font-weight-bolder  ps-2">Profit</th>
+    
+                          </tr>
+                        </thead>
+                        <tbody>
+                          
+                          {% for i in sale  %}
+                          <tr class="ps-2">
+                              <td>
+                                <h6 class="mb-0 text-sm">{{i.name}}</h6>
+                              </td>
+                              <td>
+                                <p class="text-sm font-weight-bold mb-0">Rs. {{i.cost_price}}</p>
+                              </td>
+                              <td>
+                                <span class="text-xs font-weight-bold">{{i.plate_no}}</span>
+                              </td>
+                              <td>
+                                <span class="text-xs font-weight-bold">{{i.purchase_date}}</span>
+                              </td>
+                              <td>
+                                <span class="text-xs font-weight-bold text-primary"><b>{{i.sold_date}}</b></span>
+                              </td>
+                              <td>
+                                <span class="text-xs font-weight-bold">{{i.sold_price}}</span>
+                              </td>
+                              <td>
+                                <span class="text-xs font-weight-bold text-primary">{{i.sold_price}} - {{i.cost_price}}</span>
+                              </td>
+                             
+                            </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <br>
+
+        <div class="expensesReport">
+            <div class="col-12">
+                <div class="card">
+                
+                  <div class="card-body px-0 pb-2">
+                    <div class="table-responsive p-2">
+                        <h5>Total Expenses: Rs.{{total_expenses.cost__sum}}</h5>
+                      <table class="table align-items-center justify-content-center mb-0">
+                        <thead>
+                          <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Reason</th>
+                            <th class="text-uppercase text-danger text-xxs font-weight-bolder opacity-7 ps-2">Cost</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date</th>
+                          
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          
+                          {% for i in expenses  %}
+                          <tr class="ps-2">
+                              <td>
+                                <h6 class="mb-0 text-sm">{{i.reason}}</h6>
+                              </td>
+                              <td>
+                                <p class="text-sm font-weight-bold mb-0 text-danger">Rs. {{i.cost}}</p>
+                              </td>
+                              <td>
+                                <span class="text-xs font-weight-bold">{{i.date}}</span>
+                              </td>
+                           
+                            </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+        <br>
+
+      
+    </div>
+   
+{% endblock content %}
+    
+    

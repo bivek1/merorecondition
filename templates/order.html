@@ -1,0 +1,50 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    Order {{vehicle.name}}
+{% endblock title %}
+
+
+{% block content %}
+    <div class="row mt-3">
+        <div class="col-12 col-md-7 m-auto">
+            {% if messages %}
+            {%for i in messages%}
+                <div class="alert alert-light alert-dismissible fade show" role="alert">
+                    {{i}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {%endfor%}
+            {% endif %}  
+            <div class="vechileOrder d-flex">
+                <img src="{{vehicle.image.url}}" alt="" srcset="">
+                <div class="p-2">
+                    <h5>You are Ordering {{vehicle.name}}</h5>
+                    <h6>Rs.{{vehicle.showing_price}}</h6>
+                    <p>Run: {{vehicle.run_km}}</p>
+                    <p>Insurance: {{vehicle.insurance}}</p>
+                    <p>Plate No. {{vehicle.plate_no}}</p>
+                </div>
+               
+            </div>
+            <br>
+            <div class="orderbox p-2">
+                <form action="" method="post">
+                    <label for="name">Name</label>
+                    <input class="form-control mt-2" type="text" placeholder="Full Name" name = "name" required>
+                    <label for="number">Phone Number</label>
+                    <input class="form-control mt-2" type="number" placeholder="Phone Number" name = "number" required>
+                    <label for="address">Address</label>
+                    <input class="form-control mt-2" type="text" placeholder="Address" name = "address" required>
+                    {% csrf_token %}
+                    <button class="btn btn-danger w-100 mt-2">
+                        Order {{vehicle.type}}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+    
+    

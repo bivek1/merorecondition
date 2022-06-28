@@ -1,0 +1,36 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+    Recondition House List
+{% endblock title %}
+
+
+{% block content %}
+    <div class="row mt-3">
+        
+        {% for i in house  %}
+            
+            <div class="col-6 col-md-3 col-lg-2 pt-3">
+                <a href="{%url 'recon:reconditionD' i.id%}">
+                <div class="vBox">
+                    {% if i.profile_pic %}
+                        <img src="{{i.profile_pic.url}}" alt="{{i.recondition_name}">
+                    {%else%}
+                        <img class="opacity-7" src="{%static 'img/logo.png'%}" alt="{{i.recondition_name}">
+                    {% endif %}
+                    <div class="data p-2">
+                        <h6 class="opacity-7">{{i.recondition_name}}</h6>
+                        <p class="p-0 m-0"><i class="fa fa-phone"></i> {{i.number}}</p>
+                        <p class="p-0 m-0"><i class="fa fa-location"></i> {{i.Temporary_address}}</p>
+                        
+                    </div>
+                </div>
+                </a>
+            </div>
+          
+        {% endfor %}
+            
+       
+    </div>
+{% endblock content %}
+    

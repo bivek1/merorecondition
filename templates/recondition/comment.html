@@ -1,0 +1,97 @@
+{% extends 'recondition/homepage.html' %}
+
+{% block title %}
+    Comments
+{% endblock title %}
+
+
+{% block pages %}
+    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{%url 'recond:homepage'%}">Dashboard</a></li>
+        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Comments</li>
+    </ol>
+{% endblock pages %}
+    
+
+{% block content %}
+
+    <div class="container-fluid py-4">
+    
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-12 mb-md-0 mb-4 m-auto">
+                <div class="card">
+                  <div class="card-header pb-0">
+                    <div class="row">
+                      <div class="col-lg-6 col-7">
+                        <h6>Comments</h6>
+                        <p class="text-sm mb-0">
+                          <i class="fa fa-check text-info" aria-hidden="true"></i>
+                          <span class="font-weight-bold ms-1">Entire comments on your vehicle
+                        </p>
+                      </div>
+                     
+                    </div>
+                  </div>
+                  <div class="card-body px-0 pb-2">
+                    <div class="table-responsive">
+                      <table class="table align-items-center mb-0">
+                        <thead>
+                          <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Vehicle</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">User</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Comment</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            
+                        {% for i in com %}
+                        <tr>
+                            <td>
+                                <a href="{%url 'recon:vehicleD' i.vehicle.id%}">
+                                    <div class="d-flex px-2 py-1">
+                                        <div>
+                                        <img src="{{i.vehicle.image.url}}" class="avatar avatar-sm me-3" alt="xd">
+                                        </div>
+                                        <div class="d-flex flex-column justify-content-center">
+                                        <h6 class="mb-0 text-sm">{{i.vehicle.name}}</h6>
+                                        </div>
+                                    </div>
+                                </a>
+                             
+                            </td>
+                            <td>
+     
+                            </td>
+                            <td class="align-middle text-center text-sm">
+                              <span class="text-xs font-weight-bold"> {%if i.user%} {{i.user.first_name}} {{i.user.last_name}} {%else%} Anoynomous {%endif%}</span>
+                            </td>
+                            <td class="align-middle">
+                              <div class="progress-wrapper w-75 mx-auto">
+                                <div class="progress-info">
+                                  <div class="progress-percentage">
+                                    <span class="text-xs font-weight-bold">{{i.date}}</span>
+                                  </div>
+                                </div>
+                                <div>
+                                    <small>{{i.comment}}</small>
+                             
+                                </div>
+                              </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+   
+{% endblock content %}
+    
+    

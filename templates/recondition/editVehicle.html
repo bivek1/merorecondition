@@ -1,0 +1,126 @@
+{% extends 'recondition/homepage.html' %}
+
+{% block title %}
+    Edit {{vehicle.name}}
+{% endblock title %}
+
+
+{% block pages %}
+    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{%url 'recond:homepage'%}">Dashboard</a></li>
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{%url 'recond:vehicle'%}">Vehicle</a></li>
+        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Edit Vechile</li>
+    </ol>
+{% endblock pages %}
+    
+
+{% block content %}
+
+    <div class="container-fluid py-4">
+        
+        {% if messages %}
+            {%for i in messages%}
+                <div class="alert alert-light alert-dismissible fade show" role="alert">
+                    {{i}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {%endfor%}
+        {% endif %}
+            
+        <h5>Update Vechile</h5>
+        <hr>
+
+        <form action="" method="post"  enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-12 col-md-12 p-2">
+                    {{form.name.label}}
+                    {{form.name}}
+                    {{form.name.errors}}
+                </div>      
+                
+                <div class="col-6 col-md-6 p-2">
+                    {{form.cost_price.label}}
+                    {{form.cost_price}}
+                    {{form.cost_price.errors}}
+                </div>   
+                <div class="col-6 col-md-6 p-2">
+                    {{form.type.label}}
+                    {{form.type}}
+                    {{form.type.errors}}
+                </div>   
+
+                <div class="col-6 col-md-6 p-2">
+                    {{form.plate_no.label}}
+                    {{form.plate_no}}
+                    {{form.plate_no.errors}}
+                </div>   
+
+                <div class="col-6 col-md-6 p-2">
+                    {{form.purchase_date.label}}
+                    {{form.purchase_date}}
+                    {{form.purchase_date.errors}}
+                </div>   
+
+                <div class="col-6 col-md-6 p-2">
+                    {{form.showing_price.label}}
+                    {{form.showing_price}}
+                    {{form.showing_price.errors}}
+                </div>   
+
+                <div class="col-12 col-md-6 p-2">
+                    {{form.maintainance_cost.label}}
+                    {{form.maintainance_cost}}
+                    {{form.maintainance_cost.errors}}
+                </div>   
+
+                <div class="col-12 col-md-12 p-2">
+                    {{form.maintainance_detail.label}}
+                    {{form.maintainance_detail}}
+                    {{form.maintainance_detail.errors}}
+                </div>   
+
+                <div class="col-12 col-md-12 p-2">
+                    {{form.book_no.label}}
+                    {{form.book_no}}
+                    {{form.book_no.errors}}
+                </div>   
+
+                <div class="col-12 col-md-12 p-2">
+                    {{form.insurance.label}}
+                    {{form.insurance}}
+                    {{form.insurance.errors}}
+                </div>   
+
+                <div class="col-6 col-md-6 p-2">
+                    {{form.run_km.label}}
+                    {{form.run_km}}
+                    {{form.run_km.errors}}
+                </div>   
+
+                <div class="col-6 col-md-6 p-2">
+                    {{form.modal.label}}
+                    {{form.modal}}
+                    {{form.modal.errors}}
+                </div>   
+
+                <div class="col-12 col-md-6 p-2">
+                    {{form.image.label}}
+                    {{form.image}}
+                    {{form.image.errors}}
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary mt-2">
+                        Update Vehicle
+                    </button>
+                </div>   
+               
+                <div class="col-12 col-md-6 p-2">
+                    <img src="{{vehicle.image.url}}" alt="vehicle.name" style="height:auto; width:100%;">
+                </div>
+            </div>
+           
+        </form>
+    </div>
+   
+{% endblock content %}
+    
+    
