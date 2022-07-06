@@ -1,0 +1,44 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+    Earn money Online from Merorecondition.com
+{% endblock title %}
+
+
+{% block content %}
+    <div class="p-3 mt-3">
+        <h5>Earn From Merorecondition</h5>
+        <p>Earn Money | See vehicle | Show to someone who need it | Contact Dealer | Get Your earning</p>
+        <div class="row mt-3">
+            
+            {% for i in com  %}
+                
+                <div class="col-12 col-md-3 pt-3">
+                    <a href="{%url 'recon:reconditionD' i.id%}">
+                    <div class="vBox" style="height: auto;">
+                        {% if i.vehicle.image %}
+                            <img src="{{i.vehicle.image.url}}" alt="{{i.vehicle.name}" style="height: 260px;">
+                        {%else%}
+                            <img class="opacity-7" src="{%static 'img/logo.png'%}" alt="{{i.vehicle.name}" style="height: 260px;">
+                        {% endif %}
+                        <div class="data p-2" style="width: 50%;">
+                            <h6 class="opacity-7">{{i.vehicle.name}}</h6>
+                            <p class="p-0 m-0">Plate: {{i.vehicle.plate_no}}</p>
+                            <h5 class="p-0 m-0"> RS {{i.vehicle.showing_price}}</h5>
+                            <h6 class="mt-2 p-0">Seller</h6>
+                            <hr class="p-0 mt-2">
+                            <p>{{i.vehicle.user.recondition.recondition_name}}</p>
+                            <h6>Commision Rate: <span class="text-danger">{{i.rate}}% of sold price</span></h6>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+              
+            {% endfor %}
+                
+           
+        </div>
+    </div>
+   
+{% endblock content %}
+    

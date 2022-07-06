@@ -3,8 +3,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.views import View
-from .models import Category, Order, Recondition, Vehicle, Comment
-from django.views.generic import TemplateView
+from .models import Blog, Category, Commision, Order, Recondition, Vehicle, Comment, Contact
+from django.views.generic import TemplateView, ListView
 from django.contrib.auth import logout, authenticate, login
 # Create your views here.
 class Homepage(TemplateView):
@@ -25,6 +25,15 @@ class Homepage(TemplateView):
             
         }
         return render(request,self.template_name, dist)
+        
+    def post(self, request, *args, **kwargs):
+        name = request.POST['name']
+        vehi = Vehicle.objects.filter(name__icontains = name)
+
+        dist = {
+            'vehi':vehi
+        }
+        return render(request, 'search.html', dist) 
 
 def loginPage(request):
 
@@ -57,12 +66,14 @@ def logoutPage(request):
     
 
 
-def vehicleDetail(request, id):
-    vehicle = Vehicle.objects.get(id = id)
+def vehicleDetail(request, slug):
+    vehicle = Vehicle.objects.get(slug = slug)
     comments = Comment.objects.filter(vehicle = vehicle)
+    similar = Vehicle.objects.filter(name__icontains = vehicle.name[:5])
     dist = {
         'vehicle':vehicle,
-        'comment':comments
+        'comment':comments,
+        'similar':similar
     }
     if request.method == 'POST':
         comment = request.POST['comment']
@@ -94,9 +105,17 @@ class allHouse(View):
         return render(request, self.template_name, dist)
 
 
-def reconditionD(request, id):
+
+def categoryShow(request, id):
+    template_name = "category.html"
+    dist = {
+        'vehicle':Vehicle.objects.filter(type_id = id)
+    }
+    return render(request, template_name, dist)
+
+def reconditionD(request, slug):
     tem = "recondition.html"
-    recon = Recondition.objects.get(id = id)
+    recon = Recondition.objects.get(slug = slug)
     vehicle = Vehicle.objects.filter(user= recon.admin).order_by('-id')[:6]
     all_vehicle = Vehicle.objects.filter(user = recon.admin)
     dist = {
@@ -110,8 +129,20 @@ def reconditionD(request, id):
 class About(TemplateView):
     template_name= "about.html"
 
-class Contact(TemplateView):
+class ContactV(TemplateView):
     template_name= "contact.html"
+
+    def post(self, request, *args, **kwargs):
+        name = request.POST['fullname']
+        number = request.POST['number']
+        email = request.POST['email']
+        remark = request.POST['remark']
+
+        Contact.objects.create(fullname = name, number = number, email = email, remark = remark)
+        messages.success(request, "Sucessfully sent Message. We will contact you soon..")
+        return render(request, self.template_name)
+
+
 
 def order(request, id):
     vehicle = Vehicle.objects.get(id = id)
@@ -131,3 +162,36 @@ def order(request, id):
                 Order.objects.create(name = name, number= number, address = address)
             messages.success(request, "Succesfully Ordered. Wait for the Call")
     return render(request, 'order.html', dist)
+
+
+def BlogV(request):
+    blog = Blog.objects.all()
+    dist = {
+        'blog':blog
+    }
+    return render(request, "blog.html", dist)
+
+def blogDetails(request, slug):
+    blog = Blog.objects.get(slug = slug)
+
+    fist ={
+        'blog':blog
+    }
+
+    return render(request, 'blogD.html', fist)
+
+# Earn money View
+class Earn(TemplateView):
+    template_name = "earn.html"
+
+    def get(self, request, *args, **kwargs):
+        com = Commision.objects.all().order_by('-id')
+        dist = {
+            'com':com
+        }
+
+        return render(request, self.template_name, dist)
+
+
+    
+    

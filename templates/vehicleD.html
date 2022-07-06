@@ -1,52 +1,118 @@
 {% extends 'index.html' %}
-
+{% load static %}
 {% block title %}
     {{vehicle.name}}
 {% endblock title %}
-
+{% block seo %}
+    <meta name="description" content="{{vehicle.remarks|safe}}" />    
+    <meta name="{{vehicle.name}}" content="{{vehicle.remarks|safe}}" />
+    <meta name="keywords" content="{{vehicle.name}},Mero Recondition">
+    <meta name="author" content="Mero Recondition">
+    <!-- <meta property="og:url" content="" /> -->
+    <meta property="og:title" content="{{vehicle.name}}" />
+    <meta property="og:image" content="{{vehicle.image.url}}" />
+    <meta property="og:image:alt" content="{{vehicle.name}}" />
+{% endblock seo %}
 
 {% block content %}
     <div class="productDiv mt-4">
         <div class="row">
-            <div class="col-md-6 col-12">
-                <img src="{{vehicle.image.url}}" alt="{{vehicle.name}}" srcset="">
+            <div class="col-12 col-md-8">
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <img src="{{vehicle.image.url}}" alt="{{vehicle.name}}" srcset="" id="changeImage">
+                        <div class="row">
+                            
+                            {% for i in vehicle.vehicle_photo.all  %}
+
+                                <div class="item-gallery pt-2" style="height:70px; width:70px; display:flex;"> <img id = "changeThumb" src="{{i.image.url}}" onclick="changeImg(this);" style="height: 100%; width:100%;"></div>
+                               
+                            {% endfor %}
+                                
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <h5>{{vehicle.name}}</h5>
+                        <h6>Rs.{{vehicle.showing_price}}</h6>
+                        <p>Run: {{vehicle.run_km}}</p>
+                        <p>Insurance: {{vehicle.insurance}}</p>
+                        <p>Plate No. {{vehicle.plate_no}}</p>
+                        <a href="tel:{{vehicle.user.recondition.number}}">
+                            <button class="btn btn-secondary">
+                                <i class="fa fa-phone"></i> Call
+                            </button>
+                        </a>
+                    
+                        <a href="{%url 'recon:order' vehicle.id%}">
+                            <button class="btn btn-danger">
+                                Order {{vehicle.type}}
+                            </button>
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-6 col-12">
-                <h5>{{vehicle.name}}</h5>
-                <h6>Rs.{{vehicle.showing_price}}</h6>
-                <p>Run: {{vehicle.run_km}}</p>
-                <p>Insurance: {{vehicle.insurance}}</p>
-                <p>Plate No. {{vehicle.plate_no}}</p>
-               
-                <button class="btn btn-secondary">
-                    Contact Recondition
-                </button>
-                <a href="{%url 'recon:order' vehicle.id%}">
-                    <button class="btn btn-danger">
-                        Order {{vehicle.type}}
-                    </button>
-                </a>
-                <hr>
-                <small>
-                    {{vehicle.remarks}}
-                </small>
+            <div class="col-12 col-md-4">
+                <div class="row mt-3">
+                    <h6>Similar Vehicle</h6>
+                    <hr class="m-0 p-0">
+                    {% for i in similar  %}
+                        <div class="col-md-6 col-lg-4 col-6 pt-3">
+                          
+                            <a href="{{i.get_absolute_url}}">
+                                <div class="vBox">
+                                    <img src="{{i.image.url}}" alt="{{i.name}}">
+                                    <div class="p-1">
+                                        <p class="p-0 m-0">{{i.name|truncatewords:8}}</p>
+                                        <h6 class="p-0 m-0">Rs.{{i.showing_price}}</h6>
+                                        <small style="opacity:.8;">Ran: {{i.run_km}}</small>
+                                        <small class="d-block" style="opacity:.8;">{{i.modal}} Modal</small>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            
             </div>
-            <div class="col-md-9 col-12">
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-8 col-12">
+                <div class="remarks">
+                    
+                    {% if vehicle.remarks %}
+                        {{vehicle.remarks}}
+                    {% endif %}
+                        
+                    
+                </div>
                 <h6>Add Comment</h6>
                 <hr>
                 
                 {% for i in comment  %}
-                
-                    {% if i.user %}
-                    <h6>{{i.user.first_name}} {{i.user.last_name}}</h6>
-                    {%else%}
-                    <h6>Anoynomous</h6>
-                    {% endif %}
-                    <p>{{i.comment}}</p>
+                    <div class="bg-light">
+                        {% if i.user %}
+                        <p class="m-0 p-0">
+                            <b> <i class="fa fa-user-circle"></i>
+                                {{i.user.first_name}} {{i.user.last_name}}</b>
+                           
+                            </p>
+                        {%else%}
+                            <b>
+                                <p class="m-0 p-0">
+                                    <i class="fa fa-user-circle"></i>
+                                    Anoynomous
+                                </p>
+                            </b>
+                            
+                        {% endif %}
+                        <small class="ps-3">{{i.comment}}</small>
+                        <hr class="m-0 p-0" style="width:30%;">
+                    </div>
+                    
                         
                 {% endfor %}
                     
-                <form action="" method="post">
+                <form action="" method="post" class="mt-3">
                     <input type="text" class="form-control" placeholder="Add Your Comments...." name = "comment">
                
                     {% csrf_token %}
@@ -54,20 +120,31 @@
                 </form>
                 
             </div>
-            <div class="col-md-3 col-12">
-                <div class="reconditionShow">
-                    {% if vehicle.user.recondition %}
-                    <h6>{{vehicle.user.recondition.recondition_name}}</h6>
-                    <img src="{{vehicle.user.recondition.profile_pic.url}}" alt="{{vehicle.user.recondition.recondition_name}}">
-                    {% endif %}
-                    <p>Contact : {{vehicle.user.recondition.number}}</p>
-                    <p>Address : {{vehicle.user.recondition.Temporary_address}}</p>
-                </div>
+            <div class ="col-md-4 col-12 mt-3">
+                <h6>Provider</h6>
+                <a href="{{vehicle.user.recondition.get_absolute_url}}">
+                    <div class="hrecBox d-flex mt-2">
+                        
+                        {% if vehicle.user.recondition.profile_pic %}
+                            <img src="{{vehicle.user.recondition.profile_pic.url}}" alt="{{vehicle.recondition_name}">
+                        {%else%}
+                            <img class="opacity-7" src="{%static 'img/logo.png'%}" alt="{{i.recondition_name}">
+                        {% endif %}
+                        <div class="data p-2">
+                            <h6 class="m-0 p-0">{{vehicle.user.recondition.recondition_name|truncatewords:4}}</h6>
+                            <p class="p-0 m-0"><i class="fa fa-phone"></i> {{vehicle.user.recondition.number}}</p>
+                            <p class="p-0 m-0"><i class="fa fa-location"></i> {{vehicle.user.recondition.Temporary_address}}</p>
+                        </div>
+                    </div>
+                </a>
                
-                    
-                
             </div>
         </div>
     </div>
+    <script>
+        function changeImg(a) {
+            document.getElementById("changeImage").src = a.src;
+        }
+    </script>
 {% endblock content %}
     

@@ -1,6 +1,15 @@
 {% extends 'index.html' %}
 
-
+{% block seo %}
+    <meta name="description" content="{{recon.recondition_name}}" />    
+    <meta name="{{recon.recondition_name}}" content="{{recon.recondition_name}}" />
+    <meta name="keywords" content="{{recon.recondition_name}},Mero Recondition">
+    <meta name="author" content="Mero Recondition">
+    <meta property="og:title" content="{{recon.recondition_name}}" />
+    <meta property="og:image" content="{{recon.profile_pic.url}}" />
+    <meta property="og:image:alt" content="{{recon.recondition_name}}" />
+    
+{% endblock seo %}
 {% block title %}
     {{recon.recondition_name}}
 {% endblock title %}
@@ -8,28 +17,41 @@
 
 {% block content %}
     <div class="row mt-3 topBox ps-2 pe-2 pt-4 pb-4">
-        <div class="col-12 col-md-5">
-            <div class="houseBox d-flex">
+        <div class="col-12 col-md-4">
+            <div class="houseBox">
+      
                 <img src="{{recon.profile_pic.url}}" alt="{{recon.recondition_name}}" srcset="">
+                
                 <div class="p-2">
                     <h5 class="p-0 m-0">{{recon.recondition_name}}</h5>
-                    <p class="p-0 m-0">{{recon.Temporary_address}}</p>
-                    <small>{{recon.number}}</small>
+                    <p class="p-0 m-0">
+                        <i class="fa fa-location"></i>
+                        {{recon.Temporary_address}}</p>
+                    <small>
+                        <i class="fa fa-phone"></i>
+                        {{recon.number}}</small>
+                    <br>
+                    <a href="tel:{{recon.number}}">
+                        <button class="btn btn-danger">
+                            <i class="fa fa-phone"></i> Call
+                        </button>
+                    </a>
                 </div>   
             </div>
         </div>
-        <div class="col-12 col-md-7">
+        <div class="col-12 col-md-8">
             <h5>Latest from {{recon.recondition_name}}</h5>
             <div class="row">
                 {% for i in vehicle %}
                     <div class="col-12 col-md-4 pt-2">
-                        <a href="{%url 'recon:vehicleD' i.id%}">
+                        <a href="{{i.get_absolute_url}}">
                             <div class="vehicleBox d-flex">
                                 <img src="{{i.image.url}}" alt="{{i.name}}">
                                 <div class="p-1">
-                                    <p class="p-0 m-0">{{i.name}}</p>
-                                    <h5 class="p-0 m-0">Rs.{{i.showing_price}}</h5>
-                                    <small>Ran: {{i.run_km}}</small>
+                                    <p class="p-0 m-0">{{i.name|truncatewords:8}}</p>
+                                    <h6 class="p-0 m-0">Rs.{{i.showing_price}}</h6>
+                                    <small style="opacity:.8;">Ran: {{i.run_km}}</small>
+                                    <small class="d-block" style="opacity:.8;">{{i.modal}} Modal</small>
                                 </div>
                                 
                             </div>
@@ -42,14 +64,15 @@
     <div class="row mt-3">
         <h5 class="text-center">Vechile from {{recon.recondition_name}}</h5>
         {% for i in all_vehicle  %}
-        <div class="col-md-3 col-6 pt-4">
-            <a href="{%url 'recon:vehicleD' i.id%}">
+        <div class="col-md-3 col-lg-2 col-6 pt-4">
+            <a href="{{i.get_absolute_url}}">
                 <div class="vBox">
                     <img src="{{i.image.url}}" alt="{{i.name}}">
                     <div class="p-1">
-                        <p class="p-0 m-0">{{i.name}}</p>
-                        <h5 class="p-0 m-0">Rs.{{i.showing_price}}</h5>
-                        <small>Ran: {{i.run_km}}</small>
+                        <p class="p-0 m-0">{{i.name|truncatewords:8}}</p>
+                        <h6 class="p-0 m-0">Rs.{{i.showing_price}}</h6>
+                        <small style="opacity:.8;">Ran: {{i.run_km}}</small>
+                        <small class="d-block" style="opacity:.8;">{{i.modal}} Modal</small>
                     </div>
                 </div>
             </a>

@@ -37,6 +37,22 @@
                     <label for="end"> End Date</label>
                     <input type="date" class="form-control" name = "end" value="{{end}}">
                   </div>
+                  <div class="col-12 col-md-12 p-2">
+                    <label for="end">Filter with Type </label>
+                    <select name="type" id="" class="form-control">
+                      <option value="all">All</option>
+                      
+                      {% for i in type %}
+                        <option 
+                        {% if tt == i.name %}
+                          selected
+                        {% endif %}
+                           value="{{i.id}}">{{i.name}}</option>
+                      {% endfor %}
+                        
+                    </select>
+                  
+                  </div>
                   {% csrf_token %}
                   
                   <button class="btn btn-primary">

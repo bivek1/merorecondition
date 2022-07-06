@@ -1,12 +1,15 @@
-from datetime import datetime
+from datetime import date, datetime
 from django.urls import reverse
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.db.models import Sum
-from .forms import VehicleForm, ExpenseForm, Recondition_Form
-from recon.models import Vehicle, Expenses, Comment, Order, Recondition,CustomUser
+
+from recon.models import Commision
+
+from .forms import CommisionForm, VehicleForm, ExpenseForm, Recondition_Form
+from recon.models import Vehicle, Expenses, Comment, Order, Recondition,CustomUser,Photos, Category as Type
 
 # Create your views here.
 
@@ -26,7 +29,7 @@ class Homepage(TemplateView):
         expenses = Expenses.objects.filter(recondition = request.user).order_by('-date').aggregate(Sum('cost'))
 
         dist =  {
-            'vehicle':Vehicle.objects.filter(user = request.user),
+            'vehicle':Vehicle.objects.filter(user = request.user)[:6],
             'com':com[:5],
             'purchase':purchase,
             'sale':sale,
@@ -36,6 +39,14 @@ class Homepage(TemplateView):
             'cmt_count':Comment.objects.filter(vehicle__user = request.user).filter(seen = False).count()
         }
         return render(request, self.template_name, dist)
+    def post(self, request, *args, **kwargs):
+        name = request.POST['name']
+        vehi = Vehicle.objects.filter(name__icontains = name)
+
+        dist = {
+            'vehi':vehi
+        }
+        return render(request, 'recondition/search.html', dist) 
     
 # Vehicle Views
 class VehicleShow(TemplateView):
@@ -68,12 +79,40 @@ class Addvehicle(TemplateView):
             saveit.user = request.user
             form.save()
             messages.success(request, "Successfully Added your Vehicle")
-            return HttpResponseRedirect(reverse('recond:vehicle'))
+            return HttpResponseRedirect(reverse('recond:addVehicleImage', args=[saveit.id]))
 
         else:
             messages.error(request, "Something went wrong")
             return HttpResponseRedirect(reverse('recond:vehicle'))  
 
+
+# Add vehicle Image
+def addVehicleImage(request, id):
+    template_name = "recondition/addVehicleImage.html"
+    vehicles = Vehicle.objects.get(id = id)
+    print(vehicles)
+    form = VehicleForm()
+    
+    dist =  {
+        'form':form,
+        'vehicle':vehicles
+    }
+  
+    if request.method == 'POST':
+        try:
+            vehicles.image = request.FILES['image']
+            images = request.FILES.getlist("file[]")
+            vehicles.save()
+            for img in images:
+                image = Photos(vehicle = vehicles, image= img)
+                image.save()
+            messages.success(request, "Successfully Updated your Vehicle")
+            return HttpResponseRedirect(reverse('recond:vehicle'))
+            
+        except:
+            messages.error(request, "Something went wrong")
+            return HttpResponseRedirect(reverse('recond:addVehicleImage', args=[id]))      
+    return render(request, template_name, dist)
 
 # Edit Vehicle Views
 def Editvehicle(request, id):
@@ -105,6 +144,11 @@ def Editvehicle(request, id):
         if form.is_valid():
 
             form.save()
+            images = request.FILES.getlist("file[]")
+            vehicles.save()
+            for img in images:
+                image = Photos(vehicle = vehicles, image= img)
+                image.save()
             messages.success(request, "Successfully Updated your Vehicle")
             return HttpResponseRedirect(reverse('recond:vehicle'))
 
@@ -113,6 +157,11 @@ def Editvehicle(request, id):
             return HttpResponseRedirect(reverse('recond:vehicle'))      
     return render(request, template_name, dist)
     
+def deleteImage(request, id):
+    imag = Photos.objects.get(id = id)
+    imag.delete()
+    messages.success(request, 'Deteled Images')
+    return HttpResponseRedirect(reverse('recond:editvehicle', args=[imag.vehicle.id]))
 # Expenses Views
 class Expenseshow(TemplateView):
     template_name = "recondition/expenses.html"
@@ -121,6 +170,7 @@ class Expenseshow(TemplateView):
         expenses = Expenses.objects.filter(recondition=request.user)
         exp_cost = Expenses.objects.filter(recondition = request.user).order_by('-date').aggregate(Sum('cost'))
         form = ExpenseForm()
+        form.fields['date'].initial = date.today()
         dist =  {
             'form':form,
             'expenses': expenses,
@@ -151,10 +201,12 @@ class Sales(TemplateView):
     def get(self, request, *args, **kwagrs):
         sale = Vehicle.objects.filter(user = request.user).filter(sold_status = True).order_by('-sold_date')
         total_sale = sale.aggregate(Sum('sold_price'))
-       
+
         dist =  {
             'sale':sale,
-            'total_sale':total_sale
+            'total_sale':total_sale,
+            'type':Type.objects.all(),
+
         }
         return render(request, self.template_name, dist)
     
@@ -162,14 +214,23 @@ class Sales(TemplateView):
         start = request.POST['start']
         end = request.POST['end']
         print(start, end)
-        sale = Vehicle.objects.filter(user = request.user).filter(sold_status = True).filter(sold_date__gte=start, sold_date__lte=end).order_by('-sold_date')
-        total_sale = sale.aggregate(Sum('sold_price'))
+        type = request.POST['type']
         try:
+            if type == 'all':
+                sale = Vehicle.objects.filter(user = request.user).filter(sold_status = True).filter(sold_date__gte=start, sold_date__lte=end).order_by('-sold_date')
+                tt = "All"
+            else:
+                sale = Vehicle.objects.filter(user = request.user).filter(sold_status = True).filter(sold_date__gte=start, sold_date__lte=end).order_by('-sold_date').filter(type_id = type)
+                tt = Type.objects.get(id = type).name
+            total_sale = sale.aggregate(Sum('sold_price'))
+        
             dist =  {
                 'sale':sale,
                 'start':start,
                 'end':end,
-                'total_sale':total_sale
+                'total_sale':total_sale,
+                'type':Type.objects.all(),
+                'tt':tt
             }
             messages.success(request, "Showing Your Records.....")
             return render(request, self.template_name, dist)
@@ -187,7 +248,9 @@ class Purchase(TemplateView):
         total_purchase = purchase.aggregate(Sum('cost_price'))
         dist =  {
             'purchase':purchase,
-            'total_purchase':total_purchase
+            'total_purchase':total_purchase,
+            'type':Type.objects.all(),
+
         }
         return render(request, self.template_name, dist)
     
@@ -195,14 +258,23 @@ class Purchase(TemplateView):
         start = request.POST['start']
         end = request.POST['end']
         print(start, end)
-        sale = Vehicle.objects.filter(user = request.user).filter(purchase_date__gte=start, purchase_date__lte=end).order_by('-purchase_date')
-        total_purchase = sale.aggregate(Sum('cost_price'))
+        type = request.POST['type']
         try:
+            if type == 'all':
+                sale = Vehicle.objects.filter(user = request.user).filter(purchase_date__gte=start, purchase_date__lte=end).order_by('-purchase_date')
+                tt = 'All'
+            else:
+                sale = Vehicle.objects.filter(user = request.user).filter(purchase_date__gte=start, purchase_date__lte=end).order_by('-purchase_date').filter(type_id = type)
+                tt = Type.objects.get(id = type).name
+            total_purchase = sale.aggregate(Sum('cost_price'))
+
             dist =  {
                 'purchase':sale,
                 'start':start,
                 'end':end,
-                'total_purchase':total_purchase
+                'total_purchase':total_purchase,
+                'type':Type.objects.all(),
+                'tt': tt
             }
             messages.success(request, "Showing Your Records.....")
             return render(request, self.template_name, dist)
@@ -238,7 +310,8 @@ class Report(TemplateView):
             'total_sale':total_sale,
             'total_maintainace':total_maintainance,
             'expenses':expenses,
-            'total_expenses':total_expenses
+            'total_expenses':total_expenses,
+            'type':Type.objects.all()
         }
         return render(request, self.template_name, dist)
     
@@ -246,36 +319,53 @@ class Report(TemplateView):
         start = request.POST['start']
         end = request.POST['end']
         print(start, end)
-        # Purchase Report
-        purchase = Vehicle.objects.filter(user = request.user).filter(purchase_date__gte=start, purchase_date__lte=end).order_by('-purchase_date')
-        total_purchase = purchase.aggregate(Sum('cost_price'))
-        total_maintainance = purchase.aggregate(Sum('maintainance_cost'))
-     
-
-        # Sale Report
-        sale = Vehicle.objects.filter(user = request.user).filter(sold_status = True).filter(sold_date__gte=start, sold_date__lte=end).order_by('-sold_date')
-        total_sale = sale.aggregate(Sum('sold_price'))
-
-        # expenses report
+        type = request.POST['type']
+        try:
+            if type == 'all':
+                # Purchase Report
+                purchase = Vehicle.objects.filter(user = request.user).filter(purchase_date__gte=start, purchase_date__lte=end).order_by('-purchase_date')
+                # Sale Report
+                sale = Vehicle.objects.filter(user = request.user).filter(sold_status = True).filter(sold_date__gte=start, sold_date__lte=end).order_by('-sold_date')
+                # expenses report
+                expenses = Expenses.objects.filter(recondition = request.user).order_by('-date').filter(date__gte=start, date__lte=end)
+                tt = 'All'
+            else:
+                # Purchase Report
+                purchase = Vehicle.objects.filter(user = request.user).filter(purchase_date__gte=start, purchase_date__lte=end).order_by('-purchase_date').filter(type_id = type)
+                # Sale Report
+                sale = Vehicle.objects.filter(user = request.user).filter(sold_status = True).filter(sold_date__gte=start, sold_date__lte=end).order_by('-sold_date').filter(type_id = type)
+                # expenses report
+                expenses = Expenses.objects.filter(recondition = request.user).order_by('-date').filter(date__gte=start, date__lte=end)
+                tt = Type.objects.get(id = type).name
+            total_purchase = purchase.aggregate(Sum('cost_price'))
+            total_maintainance = purchase.aggregate(Sum('maintainance_cost'))
         
-        expenses = Expenses.objects.filter(recondition = request.user).order_by('-date').filter(date__gte=start, date__lte=end)
-        total_expenses = expenses.aggregate(Sum('cost'))
+
+        
+            total_sale = sale.aggregate(Sum('sold_price'))
+
+        
+            total_expenses = expenses.aggregate(Sum('cost'))
+            dist =  {
+                'start':start,
+                'end':end,
+                'purchase':purchase,
+                'total_purchase':total_purchase,
+                'sale':sale,
+                'total_sale':total_sale,
+                'expenses':expenses,
+                'total_expenses':total_expenses,
+                'total_maintainace':total_maintainance,
+                'type':Type.objects.all(),
+                'tt':tt
+
+            }
+            return render(request, self.template_name, dist)
+        except:
+            return HttpResponseRedirect(reverse('recond:report'))
 
 
-        dist =  {
-            'start':start,
-            'end':end,
-            'purchase':purchase,
-            'total_purchase':total_purchase,
-            'sale':sale,
-            'total_sale':total_sale,
-            'expenses':expenses,
-            'total_expenses':total_expenses,
-            'total_maintainace':total_maintainance,
-
-        }
-
-        return render(request, self.template_name, dist)
+        
 # Order Views
 class OrderShow(TemplateView):
     template_name = "recondition/order.html"
@@ -376,3 +466,21 @@ class Rec_Profile(TemplateView):
             messages.success(request, "Something went wrong")
             return HttpResponseRedirect(reverse('recond:rec_profile')) 
        
+class CommisionV(TemplateView):
+    template_name = "recondition/commision.html"
+
+    def get(self, request, *args, **kwargs):
+        form = CommisionForm()
+        com = Commision.objects.filter(vehicle__user = request.user)
+        dist = {
+            'form':form,
+            'commision':com
+        }
+        return render(request, self.template_name, dist)
+
+    def post(self, request, *args, **kwargs):
+        form = CommisionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Successfully Added Commision Vehicle ")
+            return HttpResponseRedirect(reverse('recond:commision'))

@@ -15,7 +15,11 @@
     
 
 {% block content %}
-
+    <style>
+        #photoBox{
+            display: none;
+        }
+    </style>
     <div class="container-fluid py-4">
         
         {% if messages %}
@@ -31,7 +35,8 @@
         <hr>
 
         <form action="" method="post"  enctype="multipart/form-data">
-            <div class="row">
+   
+            <div class="row" id="detailBox">
                 <div class="col-12 col-md-12 p-2">
                     {{form.name.label}}
                     {{form.name}}
@@ -101,21 +106,30 @@
                     {{form.modal.label}}
                     {{form.modal}}
                     {{form.modal.errors}}
-                </div>   
-
+                </div>
+                 
+                <div class="col-12 col-md-12 p-2">
+                    {{form.remarks.label}}
+                    {{form.remarks}}
+                    {{form.remarks.errors}}
+                </div>
+            </div>
+                
+            <div class="row" id = "photoBox"> 
                 <div class="col-12 col-md-12 p-2">
                     {{form.image.label}}
                     {{form.image}}
                     {{form.image.errors}}
                 </div>   
             </div>
+      
             {% csrf_token %}
-            <button type="submit" class="btn btn-primary">
+            <button type="submit"  class="btn btn-primary" >
                 Add Vehicle
             </button>
         </form>
     </div>
-   
+
 {% endblock content %}
     
     

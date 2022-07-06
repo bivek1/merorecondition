@@ -111,7 +111,39 @@
                     <button type="submit" class="btn btn-primary mt-2">
                         Update Vehicle
                     </button>
+                    <hr>
+                    <p>Other Images</p>
+                    <div class="col-12 col-md-12 p-2 form-control" style ="display: inline-table;">
+                        <label for="file" style ="display: block;">Extra Pictures of the Products</label> <br>
+                        <div id="images" style ="display: inline-table;">
+                          <input type="file"  accept="image/*" name="file[]">
+                        </div>
+                        
+                        <button type="button" name="add_image" id="add_image" style=" background-color: #4CAF50; /* Green */
+                        border: none;
+                        color: white;
+                        padding: 15px 25px;
+                        text-align: center;
+                        text-decoration: none;
+                        display: inline-block;
+                        font-size: 16px;"> + </button>
+                    </div>
+                    
+                    <div class="row pt-3">
+                        {% for i in vehicle.vehicle_photo.all  %}
+                            <div class="col-md-3 col-lg-2 col-4 text-center">
+                                <img src="{{i.image.url}}" alt="{{vehicle.name}}" style="height:80px; width:100%;">
+                                <a href="{%url 'recond:deleteImage' i.id%}">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                                
+                            </div>
+                        {% endfor %}
+                              
+                    </div>
+                   
                 </div>   
+               
                
                 <div class="col-12 col-md-6 p-2">
                     <img src="{{vehicle.image.url}}" alt="vehicle.name" style="height:auto; width:100%;">

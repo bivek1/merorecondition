@@ -1,0 +1,69 @@
+{% extends 'owner/homepage.html' %}
+
+{% block title %}
+    Add Blog 
+{% endblock title %}
+
+
+{% block pages %}
+    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{%url 'owner:homepage'%}">Dashboard</a></li>
+        <!-- <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{%url 'owner:reconditonOwner'%}">Recondition</a></li> -->
+        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Add Blog</li>
+    </ol>
+{% endblock pages %}
+    
+
+{% block content %}
+
+    <div class="container-fluid py-4">
+        
+        {% if messages %}
+            {%for i in messages%}
+                <div class="alert alert-light alert-dismissible fade show" role="alert">
+                    {{i}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {%endfor%}
+        {% endif %}
+            
+        <h5>Add Blog</h5>
+        <hr>
+
+        <form action="" method="post"  enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-12 col-md-12 p-2">
+                    {{nform.title.label}}
+                    {{nform.title}}
+                    {{nform.title.errors}}
+                </div>      
+                
+                <div class="col-12 col-md-12 p-2">
+                    {{nform.category.label}}
+                    {{nform.category}}
+                    {{nform.category.errors}}
+                </div>   
+                <div class="col-12 col-md-12 p-2">
+                    {{nform.description.label}}
+                    {{nform.description|media}}
+                    {{nform.description.errors}}
+                </div>
+                <div class="col-12 col-md-12 p-2">
+                    {{nform.photo.label}}
+                    {{nform.photo|media}}
+                    {{nform.photo.errors}}
+                </div>      
+                
+
+               
+            </div>
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">
+                Add Recondition
+            </button>
+        </form>
+    </div>
+   
+{% endblock content %}
+    
+    

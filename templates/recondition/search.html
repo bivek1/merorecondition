@@ -1,0 +1,105 @@
+{% extends 'recondition/homepage.html' %}
+{% block title %}
+    Search Vechile
+{% endblock title %}
+
+
+{% block pages %}
+    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{%url 'recond:homepage'%}">Dashboard</a></li>
+        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Vechile</li>
+    </ol>
+{% endblock pages %}
+    
+
+{% block content %}
+
+    <div class="container-fluid py-4">
+        
+        {% if messages %}
+            {%for i in messages%}
+                <div class="alert alert-light alert-dismissible fade show" role="alert">
+                    {{i}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {%endfor%}
+        {% endif %}
+        <div class="d-flex" style="justify-content:space-between;">
+            <h5>Search Result...</h5>
+            
+          
+        </div>
+       
+        <hr>
+
+        <div class="row mt-4">
+        
+            {% for i in vehi %}
+              <div class="col-lg-4 col-md-4 mt-4 col-12 mb-4">
+                <div class="card">
+                  <div class="card-header p-0 position-relative  bg-transparent">
+                    <img src="{{i.image.url}}" alt="{{i.name}}" style="height:250px; width: 100%;">
+                  </div>
+                  <div class="card-body">
+                    <h6 class="mb-0 ">{{i.name}}</h6>
+                    <p class="text-sm ">{{i.showing_price}}</p>
+                    <hr class="dark horizontal">
+                    <div >
+                      <p>{{i.purchase_date}}</p>
+                      <p class="mb-0 text-sm"> 
+                        
+                        {% if i.sold_status %}
+                        <span class="badge bg-primary">
+                          Sold
+                        </span>
+                          
+                        {% else %}
+                        <span class="badge bg-warning">
+                          In House
+                        </span>
+                           
+                        {% endif %}
+                          
+                      </p>
+                      <div class="flex pt-2">
+                        <a href="{%url 'recond:editvehicle' i.id%}">
+                          <button class="btn btn-sm btn-primary">Edit</button>
+                        </a>
+                        
+                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.id}}">Delete</button>
+                        <!-- Delete Modal -->
+                        <!-- Modal -->
+                      <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="staticBackdropLabel">Are you sure want to Delete {{i.name}}</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <small>Once Deleted. It cannot be revive and you will also lost its data. However you will have record for your transaction </small>
+                                <img src="{{i.image.url}}" alt="" style="height: auto; width:100%;">
+                              </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              <button type="button" class="btn btn-primary">Proceed</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      </div>
+                        
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+              
+          
+          
+          </div>
+    </div>
+   
+{% endblock content %}
+    
+    

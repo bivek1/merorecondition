@@ -1,0 +1,77 @@
+{% extends 'recondition/homepage.html' %}
+
+{% block title %}
+   {{vehicle.name}} Add Images
+{% endblock title %}
+
+
+{% block pages %}
+    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{%url 'recond:homepage'%}">Dashboard</a></li>
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{%url 'recond:vehicle'%}">Vehicle</a></li>
+        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Add Vechile Images</li>
+    </ol>
+{% endblock pages %}
+    
+
+{% block content %}
+
+    <div class="container-fluid py-4">
+        
+        {% if messages %}
+            {%for i in messages%}
+                <div class="alert alert-light alert-dismissible fade show" role="alert">
+                    {{i}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {%endfor%}
+        {% endif %}
+            
+        <h5>Add Images</h5>
+        <p>{{vehicle.name}}</p>
+        <hr>
+
+        <form action="" method="post"  enctype="multipart/form-data">
+
+            <div class="row" id = "photoBox"> 
+                <div class="col-12 col-md-12 p-2">
+                    {{form.image.label}}
+                    {{form.image}}
+                    {{form.image.errors}}
+                </div>   
+                <div class="col-12 col-md-12 p-2 form-control" style ="display: inline-table;">
+                    <label for="file" style ="display: block;">Extra Pictures of the Products</label> <br>
+                    <div id="images" style ="display: inline-table;">
+                      <input type="file"  accept="image/*" name="file[]">
+                    </div>
+                    
+                    <button type="button" name="add_image" id="add_image" style=" background-color: #4CAF50; /* Green */
+                    border: none;
+                    color: white;
+                    padding: 15px 25px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 16px;"> + </button>
+                </div>
+            </div>
+      
+            {% csrf_token %}
+            <button type="submit"  class="btn btn-primary" >
+                Add Images
+            </button>
+        </form>
+    </div>
+    <script>
+          document.getElementById("add_image").onclick = function (ev){
+     
+            var image = document.getElementById("images");
+            var newInput = document.createElement("input");
+            newInput.type = "file"
+            newInput.name = "file[]"
+            image.appendChild(newInput);
+        }
+    </script>
+{% endblock content %}
+    
+    

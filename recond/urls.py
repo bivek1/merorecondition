@@ -6,6 +6,7 @@ urlpatterns = [
     path('', views.Homepage.as_view(), name="homepage"),
     path('vehicles', views.VehicleShow.as_view(), name = "vehicle" ),
     path('addvehicle', views.Addvehicle.as_view(), name= "addvehicle"),
+    path('add-vehicle-images/<int:id>', views.addVehicleImage, name = 'addVehicleImage'),
     path('expenses', views.Expenseshow.as_view(), name = "expense" ),
     path('sales', views.Sales.as_view(), name = "sale" ),
     path('purchase', views.Purchase.as_view(), name = "purchase" ),
@@ -16,6 +17,8 @@ urlpatterns = [
     path('addSale/<int:id>', views.addToSold, name ="addSale"),
     path('profile', views.Profile.as_view(), name = "profile"),
     path('recondition-profile', views.Rec_Profile.as_view(), name = "rec_profile"),
-    path('add-to-sold/<int:id>', views.addToSold, name = "addToSold")
+    path('add-to-sold/<int:id>', views.addToSold, name = "addToSold"),
+    path('deleteImage/<int:id>', views.deleteImage, name="deleteImage"),
+    path('commision',views.CommisionV.as_view(), name = "commision"),
 
 ]

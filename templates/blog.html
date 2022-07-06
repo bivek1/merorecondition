@@ -1,0 +1,28 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    Blog Merorecondition.com
+{% endblock title %}
+    
+
+{% block content %}
+   <h5 class="text-center">Our Blog</h5>
+   <hr>
+   <div class="row">
+    
+    {% for i in blog  %}
+
+        <div class="col-12 col-md-4 p-2">
+            <a href="{{i.get_absolute_url}}">
+                <div class="blogBoxs">
+                    <h5>{{i.title}}</h5>
+                    <p>
+                        {{i.description|truncatewords:10|safe}}
+                    </p>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+        
+   </div>
+{% endblock content %}

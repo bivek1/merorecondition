@@ -1,0 +1,32 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+    Category Merorecondition.com
+{% endblock title %}
+
+
+{% block content %}
+    <div class="row mt-3">
+        
+        {% for i in vehicle  %}
+            
+        <div class="col-6 col-md-3 col-lg-2 pt-3">
+            <a href="{%url 'recon:vehicleD' i.id%}">
+            <div class="vBox">
+                <img src="{{i.image.url}}" alt="{{i.name}}">
+                <div class="p-1">
+                    <p class="p-0 m-0">{{i.name|truncatewords:8}}</p>
+                    <h6 class="p-0 m-0">Rs.{{i.showing_price}}</h6>
+                    <small style="opacity:.8;">Ran: {{i.run_km}}</small>
+                    <small class="d-block" style="opacity:.8;">{{i.modal}} Modal</small>
+                </div>
+            </div>
+            </a>
+        </div>
+      
+    {% endfor %}
+            
+       
+    </div>
+{% endblock content %}
+    

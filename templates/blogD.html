@@ -1,0 +1,26 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    {{blog.title}}
+{% endblock title %}
+
+{% block seo %}
+    <meta name="description" content="{{blog.title}}" />    
+    <meta name="{{blog.title}}" content="{{blog.description|safe}}" />
+    <meta name="keywords" content="{{blog.description|safe}},Mero Recondition">
+    <meta name="author" content="Mero Recondition">
+{% endblock seo %}
+
+{% block content %}
+   <h5 class="text-center">{{blog.title}}</h5>
+   <hr>
+   <div class="row">
+        <div class="col-12 p-2">
+            <div class="blogBoxs w-100">
+                <p>
+                    {{blog.description|safe}}
+                </p>
+            </div>
+        </div>
+   </div>
+{% endblock content %}

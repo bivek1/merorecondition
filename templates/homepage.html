@@ -4,20 +4,27 @@
 <!-- top Box -->
     <div class="row">
         <div class="searchBox row ps-2 pe-2 pt-2 pb-2">
-            <div class="col-md-10 col-6 d-flex">
+            <div class="col-md-10 col-6 d-flex m-auto">
+                <form action="" method="post" class="w-100">
+                    <input type="text" name="name" id="" class="form-control ps-2 d-inline" placeholder="Search For Anything" style="width:90%;">
+                    {% csrf_token %}
+                    <button class="btn btn-sm btn-primary" type="submit">Search</button>
+
+                </form>
                 
-                <input type="text" name="" id="" class="form-control ps-2 d-inline w-60" placeholder="Search For Anything">
             </div>
             <div class="col-md-2 col-6">
-                <span class="p-2" style="cursor:pointer;">
-                    <i class="fa fa-blog"></i> Blog
-                </span>
+                <a href="{%url 'recon:blog'%}">
+                    <span class="p-2" style="cursor:pointer;">
+                        <i class="fa fa-blog"></i> Blog
+                    </span>
+                </a>
+                <a href="{%url 'recon:earn'%}">
+                    <span class="p-2" style="cursor:pointer;">
+                        <i class="fa fa-money-bill"></i> Earn
+                    </span>
+                </a>
                
-                <span class="p-2" style="cursor:pointer;">
-                
-                    <i class="fa fa-money-bill"></i> Earn
-                  
-                </span>
                 
             </div>
         </div>
@@ -26,11 +33,13 @@
                 <h6>All Categories</h6>
                 <hr>
                 {% for i in category  %}
-                    <div class="catBox mt-2 d-flex">
-                        <img src="{{i.image.url}}" alt="{{i.name}}" srcset="">
-                        <h6 class="my-auto ps-2">{{i.name}}</h6>
-                    </div>
-    
+                    <a href="{%url 'recon:category' i.id%}">
+                        <div class="catBox mt-2 d-flex">
+                            <img src="{{i.image.url}}" alt="{{i.name}}" srcset="">
+                            <h6 class="my-auto ps-2">{{i.name}}</h6>
+                        </div>
+                    </a>
+                    
                 {% endfor %}
             </div>
         </div>
@@ -40,22 +49,23 @@
                     
                 {% for i in rec  %}
                 <div class="col-12 col-md-4 p-2">
-                    <div class="hrecBox d-flex">
+                    <a href="{{i.get_absolute_url}}">
+                        <div class="hrecBox d-flex">
                         
-                        {% if i.profile_pic %}
-                            <img src="{{i.profile_pic.url}}" alt="{{i.recondition_name}">
-                        {%else%}
-                            <img class="opacity-7" src="{%static 'img/logo.png'%}" alt="{{i.recondition_name}">
-                        {% endif %}
-                            <div class="data p-2">
-                                <h6 class="m-0 p-0">{{i.recondition_name|truncatewords:4}}</h6>
-                                <!-- <hr class="m-0 p-0 bg-secondary w-10"> -->
-                                <p class="p-0 m-0"><i class="fa fa-phone"></i> {{i.number}}</p>
-                                <p class="p-0 m-0"><i class="fa fa-location"></i> {{i.Temporary_address}}</p>
-                                
-                            </div>
-                        
-                    </div>
+                            {% if i.profile_pic %}
+                                <img src="{{i.profile_pic.url}}" alt="{{i.recondition_name}">
+                            {%else%}
+                                <img class="opacity-7" src="{%static 'img/logo.png'%}" alt="{{i.recondition_name}">
+                            {% endif %}
+                                <div class="data p-2">
+                                    <h6 class="m-0 p-0">{{i.recondition_name|truncatewords:4}}</h6>
+    
+                                    <p class="p-0 m-0"><i class="fa fa-phone"></i> {{i.number}}</p>
+                                    <p class="p-0 m-0"><i class="fa fa-location"></i> {{i.Temporary_address}}</p>
+                                </div>
+                            
+                        </div>
+                    </a>
                 </div> 
                 {% endfor %}
               
@@ -63,11 +73,14 @@
         </div>
         <div class="col-md-2 pt-2">
             <div class="earnBox p-2 text-center">
-                <i class="fa fa-money-bill" style="font-size: 50px;"></i>
-                <hr>
-                <h6 class="pt-1">
-                    Earn Money From merorecondition.com
-                </h6>
+                <a href="{%url 'recon:earn'%}">
+                    <i class="fa fa-money-bill" style="font-size: 50px;"></i>
+                    <hr>
+                    <h6 class="pt-1">
+                        Earn Money From merorecondition.com
+                    </h6>
+                </a> 
+               
                 <hr>
                 <div class="d-flex ps-2 pe-2" style="justify-content:space-between;">
                     <div class="p-2">
@@ -104,8 +117,8 @@
             <div class="row p-0 m-0">
                 <h5>Latest Vehicle</h5>
                 {% for i in lastest %}
-                    <div class="col-md-4 col-lg-3 col-6 pt-3">
-                        <a href="{%url 'recon:vehicleD' i.id%}">
+                    <div class="col-md-4 col-lg-3 col-12 pt-3">
+                        <a href="{{i.get_absolute_url}}">
                             <div class="vehicleBox d-flex">
                                 <img src="{{i.image.url}}" alt="{{i.name}}">
                                 <div class="p-1">
@@ -131,7 +144,7 @@
         <h4>Hot Sale</h4>
         {% for i in hot  %}
             <div class="col-md-3 col-lg-2 col-6 pt-4">
-                <a href="{%url 'recon:vehicleD' i.id%}">
+                <a href="{{i.get_absolute_url}}">
                     <div class="vBox">
                         <img src="{{i.image.url}}" alt="{{i.name}}">
                         <div class="p-1">

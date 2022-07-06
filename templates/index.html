@@ -1,7 +1,10 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load pwa %}
+    {% progressive_web_app_meta %}
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -76,6 +79,23 @@
                 <i class="fa fa-house-signal"></i>   
               </a>
             </li>
+            
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              {% if user.recondition %}
+                <a class="nav-link" href="{%url 'recond:homepage'%}">
+                  <i class="fa fa-house"></i>   
+                </a>
+                {%else%}
+               
+                <a class="nav-link" href="{%url 'owner:homepage'%}">
+                  <i class="fa fa-house"></i>   
+                </a>
+              {% endif %}
+                
+            </li>
+            {% endif %}
+              
             <!-- <li class="nav-item">
               <a class="nav-link" href="#">
                 <i class="fa fa-money-bill"></i> 
@@ -91,13 +111,25 @@
               <a class="nav-link {%if request.path == contact%}active{%endif%}" href="{{contact}}">Contact Us</a>
             </li> -->
           </ul>
-          {%url 'recon:login' as login%}
-          <a class="{%if request.path == login%}active{%endif%}" href="{%url 'recon:login'%}">
-              <i class="fa fa-sign-in"></i>
-              <span class="navbar-text {%if request.path == login%}active{%endif%}">
-                  Login
+          
+          {% if user.is_authenticated %}
+            <a href="{%url 'recon:logout'%}">
+              <i class="fa fa-sign-out"></i>
+              <span class="navbar-text">
+                  Logout
               </span>
-          </a>
+            </a>
+          {%else%}
+            {%url 'recon:login' as login%}
+            <a class="{%if request.path == login%}active{%endif%}" href="{%url 'recon:login'%}">
+                <i class="fa fa-sign-in"></i>
+                <span class="navbar-text {%if request.path == login%}active{%endif%}">
+                    Login
+                </span>
+            </a>
+          {% endif %}
+            
+         
         
         </div>
       </div>

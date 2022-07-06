@@ -1,12 +1,12 @@
 from django import forms
-from recon.models import Vehicle, Expenses, Recondition
+from recon.models import Vehicle, Expenses, Recondition, Commision
 
 
 class VehicleForm(forms.ModelForm):
  
     class Meta:
         model = Vehicle
-        fields = ('name','type', 'cost_price', 'plate_no', 'purchase_date', 'showing_price', 'maintainance_cost', 'maintainance_detail',  'book_no' ,'insurance', 'run_km' , 'modal', 'image' )
+        fields = ('name','type', 'cost_price', 'plate_no', 'purchase_date', 'showing_price', 'maintainance_cost', 'maintainance_detail',  'book_no' ,'insurance', 'run_km' , 'modal', 'image', 'remarks' )
         # labels = None
         labels = {
             'name':'Name of the Vehicle',
@@ -22,6 +22,9 @@ class VehicleForm(forms.ModelForm):
             'run_km' : 'Total run Km',
             'modal': 'Vehicle Modal',
             'image':'Image of Vehicle',
+            'remarks':'Tell viewer about your vehicle'
+
+            
         }
         widgets = {
             'name':forms.TextInput(attrs={'class':'form-control col-12 col-md-6', 'placeholder':'Name of Vehicle'}),
@@ -37,22 +40,25 @@ class VehicleForm(forms.ModelForm):
             'run_km' : forms.NumberInput(attrs={'class':'form-control', 'placeholder':'1200'}),
             'modal': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Vehicle Modal'}),
             'image':forms.FileInput(attrs={'class':'form-control'}),
+            'remarks' : forms.Textarea(attrs={'class':'form-control', 'placeholder':'Add remarks...'}),
         }
 
 class ExpenseForm(forms.ModelForm):
     
     class Meta:
         model = Expenses
-        fields = ('reason','cost')
+        fields = ('reason','cost', 'date')
 
         labels = {
             'cost':'Total Cost',
             'reason':'Reason of Expenses',
+            'date':'Date of Expenses'
         }
 
         widgets = {
             'reason':forms.TextInput(attrs = {'class':'form-control col-12 col-md-6', 'placeholder':'Reason of Expenses'}),
             'cost':forms.NumberInput(attrs = {'class':'form-control col-12 col-md-6', 'placeholder':'Total Cost of Expenses'}),
+            'date':forms.DateInput(attrs = {'class':'form-control', 'type':'date'})
         }
 
 class Recondition_Form(forms.ModelForm):
@@ -66,4 +72,14 @@ class Recondition_Form(forms.ModelForm):
             'Temporary_address':forms.TextInput(attrs = {'class':'form-control', 'placeholder':'Temporary Address'}),
             'District':forms.TextInput(attrs = {'class':'form-control', 'placeholder':'District'}),
             'profile_pic':forms.FileInput(attrs = {'class':'form-control'}),
+        }
+
+class CommisionForm(forms.ModelForm):
+    class Meta:
+        model = Commision
+        fields = ('vehicle', 'rate',)
+
+        widgets = {
+            'vehicle':forms.Select(attrs = {'class':'form-control'}),
+            'rate':forms.NumberInput(attrs = {'class':'form-control'}),
         }

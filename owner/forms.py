@@ -1,5 +1,5 @@
 from django import forms
-from recon.models import Recondition
+from recon.models import Recondition, Blog
 
 class NormalForm(forms.Form):
     first_name = forms.CharField(max_length=200, label = "First Name" ,widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'User First Name'}))
@@ -22,4 +22,20 @@ class ReconditionForm(forms.ModelForm):
             'District':forms.TextInput(attrs={'class':'form-control', 'placeholder':'District'}),
             'profile_pic':forms.FileInput(attrs={'class':'form-control'}),
             'expire_on':forms.DateInput(attrs={'type':'date','class':'form-control'}), 
+        }
+
+class BlogForm(forms.ModelForm):
+    
+    class Meta:
+        model = Blog
+        fields = (
+            'title', 'category' , 'description'
+        )
+    
+        widgets = {
+            'title':forms.TextInput(attrs={'class':'form-control', 'placeholder':'Title of Reconditon'}), 
+            'category':forms.Select(attrs={'class':'form-control', 'placeholder':'Category'}), 
+            'description':forms.TextInput(attrs={'class':'form-control'}), 
+            # 'photo':forms.FileInput(attrs={'class':'form-control'}),
+            
         }

@@ -15,12 +15,12 @@
   <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
     <ul class="navbar-nav">
       <li class="nav-item">
-        {%url 'recond:homepage' as homepage%}
+        {%url 'owner:homepage' as homepage%}
         <a class="nav-link text-white {%if request.path == homepage%} active bg-gradient-primary {%endif%}" href="{%url 'recond:homepage'%}">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">dashboard</i>
           </div>
-          <span class="nav-link-text ms-1">Owner Dashboard</span>
+          <span class="nav-link-text ms-1">Dashboard</span>
         </a>
       </li>
       <li class="nav-item">
@@ -35,17 +35,17 @@
         </a>
       </li>
       <li class="nav-item">
-        {%url 'owner:reconditon' as homepage%}
+        {%url 'recond:expense' as homepage%}
         <a class="nav-link text-white  {%if request.path == homepage%} active bg-gradient-primary {%endif%}" href="{{homepage}}">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">receipt_long</i>
           </div>
-          <span class="nav-link-text ms-1">Recondition</span>
+          <span class="nav-link-text ms-1">Expenses</span>
         </a>
       </li>
       <li class="nav-item">
-        {%url 'recond:sale' as homepage%}
-        <a class="nav-link text-white {%if request.path == homepage%} active bg-gradient-primary {%endif%} " href="{{homepage}}">
+        {%url 'recond:sale' as sale%}
+        <a class="nav-link text-white {%if request.path == sale%} active bg-gradient-primary {%endif%} " href="{{sale}}">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">view_in_ar</i>
           </div>
@@ -71,6 +71,17 @@
         </a>
       </li>
       <li class="nav-item">
+        {%url 'owner:addBlog' as own%}
+          <a class="nav-link text-white {%if request.path == own%} active bg-gradient-primary {%endif%}" href="{{own}}">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="fa fa-home opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">
+              Blog
+            </span>
+          </a>
+      </li>
+      <li class="nav-item">
         {%url 'recond:order' as homepage%}
         <a class="nav-link text-white {%if request.path == homepage%} active bg-gradient-primary {%endif%}" href="{{homepage}}">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -92,7 +103,8 @@
         <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-white " href="../pages/profile.html">
+        {%url 'recond:profile' as homepage%}
+        <a class="nav-link text-white {%if request.path == homepage%} active bg-gradient-primary {%endif%}" href="{{homepage}}">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">person</i>
           </div>
@@ -100,17 +112,21 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-white " href="../pages/profile.html">
-          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-            <i class="material-icons opacity-10">person</i>
-          </div>
-          <span class="nav-link-text ms-1">My Recondition</span>
-        </a>
+        {%url 'owner:reconditonOwner' as own%}
+          <a class="nav-link text-white {%if request.path == own%} active bg-gradient-primary {%endif%}" href="{{own}}">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="fa fa-home opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">
+              Recondition
+            </span>
+          </a>
       </li>
+
       
       {% if user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/sign-in.html">
+          <a class="nav-link text-white " href="{%url 'recon:logout'%}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">logout</i>
             </div>
@@ -119,17 +135,9 @@
         </li>
      
       {% endif %}
-        
-    
-      <li class="nav-item">
-        <a class="nav-link text-white " href="../pages/sign-up.html">
-          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-            <i class="material-icons opacity-10">assignment</i>
-          </div>
-          <span class="nav-link-text ms-1">Sign Up</span>
-        </a>
-      </li>
-    </ul>
+
+    </ul>    
+  
   </div>
 
 </aside>
@@ -141,4 +149,365 @@
   <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Owner Dashboard</li>
 </ol>
 {% endblock pages %}
+
+
+{% block content %}
+  
+<div class="container-fluid py-4">
+  <div class="row">
+
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+      <a href="{%url 'recond:sale'%}">
+        <div class="card">
+          <div class="card-header p-3 pt-2">
+            <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+              <i class="material-icons opacity-10">weekend</i>
+            </div>
+            <div class="text-end pt-1">
+              <p class="text-sm mb-0 text-capitalize">Total Sales</p>
+              <h6 class="mb-0" id = "total_sale">Rs. {{sale.sold_price__sum}}</h6>
+            </div>
+          </div>
+          <hr class="dark horizontal my-0">
+          <div class="card-footer p-3">
+            <p class="mb-0"><span class="text-success text-sm font-weight-bolder">Total Sales</p>
+          </div>
+        </div>
+      </a>
+
+    </div>
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+      <a href="{%url 'recond:purchase'%}">
+        <div class="card">
+          <div class="card-header p-3 pt-2">
+            <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+              <i class="material-icons opacity-10">person</i>
+            </div>
+            <div class="text-end pt-1">
+              <p class="text-sm mb-0 text-capitalize">Total Purchase</p>
+              <h6 class="mb-0" id="total_purchase">Rs. {{purchase.cost_price__sum}}</h6>
+            </div>
+          </div>
+          <hr class="dark horizontal my-0">
+          <div class="card-footer p-3">
+            <p class="mb-0"><span class="text-success text-sm font-weight-bolder">Total Purchase</p>
+          </div>
+        </div>
+      </a>
+    
+    </div>
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+      <a href="{%url 'recond:vehicle'%}">
+        <div class="card">
+          <div class="card-header p-3 pt-2">
+            <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
+              <i class="material-icons opacity-10">person</i>
+            </div>
+            <div class="text-end pt-1">
+              <p class="text-sm mb-0 text-capitalize">Vehicle</p>
+              <h4 class="mb-0" id="total_vehicle">{{vehicle_c}}</h4>
+            </div>
+          </div>
+          <hr class="dark horizontal my-0">
+          <div class="card-footer p-3">
+            <p class="mb-0"><span class="text-danger text-sm font-weight-bolder">Total Vehicle</p>
+          </div>
+        </div>
+      </a>
+     
+    </div>
+    <div class="col-xl-3 col-sm-6">
+      <a href="{%url 'recond:expense'%}">
+        <div class="card">
+          <div class="card-header p-3 pt-2">
+            <div class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute">
+              <i class="material-icons opacity-10">weekend</i>
+            </div>
+            <div class="text-end pt-1">
+              <p class="text-sm mb-0 text-capitalize">Expenses</p>
+              <h6 class="mb-0" id = "total_expenses">Rs. {{expenes.cost__sum}}</h6>
+            </div>
+          </div>
+          <hr class="dark horizontal my-0">
+          <div class="card-footer p-3">
+            <p class="mb-0"><span class="text-success text-sm font-weight-bolder">Total Expenses</p>
+          </div>
+        </div>
+      </a>
+   
+    </div>
+  </div>
+  <div class="row mt-4">
+    
+    {% for i in vehicle %}
+      <div class="col-lg-4 col-md-6 mt-4 mb-4">
+          <div class="card ">
+            <div class="card-header p-0 position-relative  bg-transparent" data-bs-toggle="modal" data-bs-target="#exampleModalSold{{i.id}}">
+              <img src="{{i.image.url}}" alt="{{i.name}}" style="height:250px; width: 100%;">
+            </div>
+            <div class="card-body">
+              <h6 class="mb-0 ">{{i.name}}</h6>
+              <p class="text-sm ">{{i.showing_price}}</p>
+              <hr class="dark horizontal">
+              <div >
+                <p>{{i.purchase_date}}</p>
+                <p class="mb-0 text-sm"> 
+                  {% if i.sold_status %}
+                  <span class="badge bg-primary">
+                    Sold
+                  </span>
+                  {% else %}
+                  <span class="badge bg-warning">
+                    In House
+                  </span>
+                  {% endif %}
+                </p>
+                {% if i.sold_status%}
+                <br>
+                  <button type="submit" class="btn btn-success">Sold</button>
+                {%else%} 
+                <br>
+                  <a href="{%url 'recond:addSale' i.id%}">
+                    <button type="submit" class="btn btn-primary">Add To Sold</button>
+                  </a>
+                {% endif %}
+              
+                <!-- Sold Model -->
+                <div class="modal fade" id="exampleModalSold{{i.id}}">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Selling {{i.name}}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <form action="" method="post">
+                          <label for="date">Sold Date</label>
+                          <input type="date" class="form-control" name="{{i.id}}date" style="border:1px solid black;">
+                          <label for="price">Selling Price</label>
+                          <input type="number" class="form-control" name = "{{i.id}}price" placeholder="1400000" style="border:1px solid black;">
+                        
+                        </form>
+                      </div>
+                      {% csrf_token %}
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      
+                      
+                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    {% endfor %}
+      
+  
+  
+  </div>
+  <div class="row mb-4">
+    <div class="col-lg-8 col-md-6 mb-md-0 mb-4">
+      <div class="card">
+        <div class="card-header pb-0">
+          <div class="row">
+            <div class="col-lg-6 col-7">
+              <h6>Comments</h6>
+              <p class="text-sm mb-0">
+                <i class="fa fa-check text-info" aria-hidden="true"></i>
+                <span class="font-weight-bold ms-1">{{cmt_count}} unseen Comment
+              </p>
+            </div>
+            <div class="col-lg-6 col-5 my-auto text-end">
+             
+            </div>
+          </div>
+        </div>
+        <div class="card-body px-0 pb-2">
+          <div class="table-responsive">
+            <table class="table align-items-center mb-0">
+              <thead>
+                <tr>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Vehicle</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">User</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Comment</th>
+                </tr>
+              </thead>
+              <tbody>
+                  
+              {% for i in com %}
+              <tr>
+                  <td>
+                      <a href="{%url 'recon:vehicleD' i.vehicle.id%}">
+                          <div class="d-flex px-2 py-1">
+                              <div>
+                              <img src="{{i.vehicle.image.url}}" class="avatar avatar-sm me-3" alt="xd">
+                              </div>
+                              <div class="d-flex flex-column justify-content-center">
+                              <h6 class="mb-0 text-sm">{{i.vehicle.name}}</h6>
+                              </div>
+                          </div>
+                      </a>
+                   
+                  </td>
+                  <td>
+
+                  </td>
+                  <td class="align-middle text-center text-sm">
+                    <span class="text-xs font-weight-bold"> {%if i.user%} {{i.user.first_name}} {{i.user.last_name}} {%else%} Anoynomous {%endif%}</span>
+                  </td>
+                  <td class="align-middle">
+                    <div class="progress-wrapper w-75 mx-auto">
+                      <div class="progress-info">
+                        <div class="progress-percentage">
+                          <span class="text-xs font-weight-bold">{{i.date}}</span>
+                        </div>
+                      </div>
+                      <div>
+                          <small>{{i.comment}}</small>
+                   
+                      </div>
+                    </div>
+                  </td>
+              </tr>
+              {% endfor %}
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="card h-100">
+        <div class="card-header pb-0">
+          <h6>Orders overview</h6>
+        
+        </div>
+        <div class="card h-100">
+          <div class="card-header pb-0">
+            <h6>Orders overview</h6>
+            <p class="text-sm">
+              <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
+              <span class="font-weight-bold">{{count}} Order</span> 
+            </p>
+          </div>
+          <div class="card-body p-3">
+            <div class="timeline timeline-one-side">
+                
+                {% for i in order  %}
+                    <div class="timeline-block" >
+                        <span class="timeline-step">
+                        <i class="material-icons text-dark text-gradient">payments</i>
+                        </span>
+                        <div class="timeline-content" data-bs-toggle="modal" data-bs-target="#exampleModalOrder{{i.id}}">
+                        <h6 class="text-dark text-sm font-weight-bold mb-0">{{i.vehicle.name}}</h6>
+                        <p class="text-secondary font-weight-bold text-xs mt-1 mb-0"> 
+                            {{i.date}}
+                        </p>
+                        <p><i class="fa fa-mobile"></i> {{i.number}}</p>
+                        <img src="{{i.vehicle.image.url}}" alt="{{i.vehicle.name}}" srcset="" style="height: 100px; width:100px; border-radius:10px;">
+                        <p>{{i.vehicle.plate_no}}</p>
+                    </div>
+                    </div>
+                    <!-- Order Modal -->
+                    <div class="modal fade" id="exampleModalOrder{{i.id}}">
+                        <div class="modal-dialog modal-dialog-centered">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Order: {{i.vehicle.name}}</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6 col-12">
+                                        <img src="{{i.vehicle.image.url}}" alt="{{i.vehicle.name}}" srcset="" style="height: 250px;width:100%;">
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <h5>{{i.vehicle.name}}</h5>
+                                        <h6>Rs.{{i.vehicle.showing_price}}</h6>
+                                        <p>Run: {{i.vehicle.run_km}}</p>
+                                        <p>Insurance: {{i.vehicle.insurance}}</p>
+                                        <p>Plate No. {{i.vehicle.plate_no}}</p>
+                                       
+                                        
+                                        <small>
+                                            {{i.vehicle.remarks}}
+                                        </small>
+                                    </div>
+                                    <div class="col-12 text-center pt-2">
+                                        <h6 class="p-0 m-0">Order Details</h6>
+                                        <hr class="p-0 m-0">
+                                        <p class="m-0 p-0">Name: {{i.name}}</p>
+                                        <p class="m-0 p-0">Address: {{i.address}}</p>
+                                        <p class="m-0 p-0">
+                                            <i class="fa fa-mobile"></i>
+                                            Contact: {{i.number}}
+                                        </p>
+                                        <hr>
+                                        
+                                        {% if  i.vehicle.sold_status%}
+                                          {%else%}  
+                                          <a href="{%url 'recond:addSale' i.vehicle.id%}">
+                                            <button type="submit" class="btn btn-primary">Add To Sold</button>
+                                        </a>
+                                        {% endif %}
+                                            
+                                      
+                                        
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                         
+                          </div>
+                        </div>
+                    </div>
+                    <!-- Order Modal End -->
+                {% endfor %}
+                    
+               
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="footer py-4  ">
+    <div class="container-fluid">
+      <div class="row align-items-center justify-content-lg-between">
+        <div class="col-lg-6 mb-lg-0 mb-4">
+          <div class="copyright text-center text-sm text-muted text-lg-start">
+            © <script>
+              document.write(new Date().getFullYear())
+            </script>,
+            made with <i class="fa fa-heart"></i> by
+            <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Creative Tim</a>
+            for a better web.
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+            <li class="nav-item">
+              <a href="https://www.creative-tim.com" class="nav-link text-muted" target="_blank">Creative Tim</a>
+            </li>
+            <li class="nav-item">
+              <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted" target="_blank">About Us</a>
+            </li>
+            <li class="nav-item">
+              <a href="https://www.creative-tim.com/blog" class="nav-link text-muted" target="_blank">Blog</a>
+            </li>
+            <li class="nav-item">
+              <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted" target="_blank">License</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+{% endblock content %}
     

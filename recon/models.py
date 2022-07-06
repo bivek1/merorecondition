@@ -1,6 +1,5 @@
+from distutils.command.upload import upload
 from itertools import product
-from statistics import mode
-from turtle import back
 from urllib import request
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -8,6 +7,8 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.urls import reverse
 from django.template.defaultfilters import slugify
+from ckeditor_uploader.fields import RichTextUploadingField
+
 # Create your models here.
 
 # Create your models here.
@@ -30,17 +31,28 @@ class Recondition(models.Model):
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     number = models.BigIntegerField(blank= True, null = True)
     recondition_name = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=200, unique = True)
     Temporary_address = models.CharField(max_length = 300)
     District = models.CharField(max_length = 50, default = 'Kathmandu')
     profile_pic = models.ImageField(upload_to = "Recondition", blank = True)
     verified = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add= True)
     expire_on = models.DateField(blank= True, null = True)
-   
+    call = models.IntegerField()
     objects = models.Manager()
     
     def __str__(self):
         return self.admin.first_name
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = slugify(self.recondition_name)
+        else:
+            self.slug = slugify(self.recondition_name)
+        super(Recondition, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("recon:reconditionD", args=[self.slug])
 
     
 class Customer(models.Model):
@@ -75,6 +87,7 @@ class Vehicle(models.Model):
     user = models.ForeignKey(CustomUser, related_name = "user_vehicle", on_delete= models.CASCADE)
     type = models.ForeignKey(Category, related_name="vehicle_category", on_delete=models.DO_NOTHING)
     name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=200, unique = True)
     cost_price = models.IntegerField()
     plate_no = models.CharField(max_length=50)
     maintainance_cost = models.IntegerField(blank=True, null =True)
@@ -93,17 +106,35 @@ class Vehicle(models.Model):
 
     objects = models.Manager()
 
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = slugify(self.name)
+        else:
+            self.slug = slugify(self.name)
+        super(Vehicle, self).save(*args, **kwargs)
+    
+    def get_absolute_url(self):
+        return reverse("recon:vehicleD", args=[self.slug])
+
     def __str__(self):
         return self.name
 
 
+class Photos(models.Model):
+    id = models.AutoField(primary_key=True)
+    image = models.ImageField(upload_to ="vehicle_more", null = True, blank = True)
+    vehicle = models.ForeignKey(Vehicle, related_name="vehicle_photo", on_delete=models.CASCADE)
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.vehicle.name
 class Expenses(models.Model):
     id = models.AutoField(primary_key=True)
     cost = models.IntegerField()
     reason = models.CharField(max_length=200)
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField()
     recondition = models.ForeignKey(CustomUser, related_name="recondition_expenses", on_delete=models.CASCADE)
-
+    
     def __str__(self):
         return self.reason
 
@@ -117,6 +148,15 @@ class Transaction(models.Model):
     def __str__(self):
         return self.recondition.first_name
 
+
+class Commision(models.Model):
+    id = models.AutoField(primary_key=True)
+    vehicle = models.ForeignKey(Vehicle, related_name = 'vehicle_commision', on_delete=models.CASCADE)
+    rate = models.IntegerField()
+    objects = models.Manager()
+
+    def __str__(self):
+        return f'{self.vehicle.name} , {self.rate}'
 
 class Comment(models.Model):
     id = models.AutoField(primary_key = True)
@@ -144,6 +184,43 @@ class Order(models.Model):
 
     def __str__(self):
         return self.name
+
+class Blog(models.Model):
+    id = models.AutoField(primary_key = True)
+    title = models.CharField(max_length=300)
+    slug = models.SlugField(max_length=200, unique = True)
+    photo = models.ImageField(upload_to="blogs/", null = True, blank = True),
+    category = models.ForeignKey(Category, related_name  = "blog_category", on_delete = models.PROTECT)
+    description = RichTextUploadingField()
+    visit = models.IntegerField(null = True, blank = True)
+    date_added = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now = True)
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.title
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = slugify(self.name)
+        else:
+            self.slug = slugify(self.name)
+        super(Vehicle, self).save(*args, **kwargs)
+    
+    def get_absolute_url(self):
+        return reverse("recon:blogD", args=[self.slug])
+
+
+class Contact(models.Model):
+    id = models.AutoField(primary_key=True)
+    fullname = models.CharField(max_length=100)
+    number = models.BigIntegerField(null = True, blank= True)
+    email = models.EmailField(blank=True, null = True)
+    remark = models.CharField(max_length=200, null = True, blank = True)
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.fullname
+
 
 
 @receiver(post_save, sender=CustomUser)
