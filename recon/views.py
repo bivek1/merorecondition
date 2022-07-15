@@ -21,7 +21,9 @@ class Homepage(TemplateView):
             'lastest':latest,
             'hot':latest,
             'houses':houses,
-            'rec':rec
+            'rec':rec,
+            'bike':Vehicle.objects.filter(type__name = 'Bike').order_by("?")[:12],
+            'car':Vehicle.objects.filter(type__name = "Car").order_by("?")[:12],
             
         }
         return render(request,self.template_name, dist)

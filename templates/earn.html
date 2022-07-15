@@ -14,7 +14,7 @@
             {% for i in com  %}
                 
                 <div class="col-12 col-md-3 pt-3">
-                    <a href="{%url 'recon:reconditionD' i.id%}">
+                    <a href="{%url 'recon:vehicleD' i.vehicle.slug%}">
                     <div class="vBox" style="height: auto;">
                         {% if i.vehicle.image %}
                             <img src="{{i.vehicle.image.url}}" alt="{{i.vehicle.name}" style="height: 260px;">

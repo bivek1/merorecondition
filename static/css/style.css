@@ -218,3 +218,19 @@ h6{
 .blogBoxs:hover{
     box-shadow: 0 18px 18px 0 rgba(144, 144, 144, 0.2), 0 16px 40px 0 rgba(124, 124, 124, 0.19); 
 }
+.showMob{
+    display: none;
+}
+
+@media only screen and (max-width: 600px) {
+    .showMob{
+        display: initial;
+    }
+    .catBox img{
+        height: 100%;
+        width: 100%;
+    }
+    .nnam{
+        display: none;
+    }
+}
