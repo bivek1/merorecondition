@@ -1,5 +1,6 @@
+from dataclasses import field
 from django import forms
-from recon.models import Vehicle, Expenses, Recondition, Commision
+from recon.models import Vehicle, Expenses, Recondition, Commision, Exchange
 
 
 class VehicleForm(forms.ModelForm):
@@ -30,7 +31,7 @@ class VehicleForm(forms.ModelForm):
             'name':forms.TextInput(attrs={'class':'form-control col-12 col-md-6', 'placeholder':'Name of Vehicle'}),
             'type':forms.Select(attrs={'class':'form-control col-12 col-md-6'}),
             'cost_price':forms.NumberInput(attrs={'class':'form-control col-12 col-md-6', 'placeholder':'2500000'}),
-            'plate_no': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'Ba 1 Pa 2101'}),
+            'plate_no': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Ba 1 Pa 2101'}),
             'purchase_date': forms.DateInput(attrs={'type':'date','class':'form-control', 'placeholder':'Purchase Date'}),
             'showing_price':forms.NumberInput(attrs={'class':'form-control', 'placeholder':'Showing Cost'}),
             'maintainance_cost':forms.NumberInput(attrs={'class':'form-control', 'placeholder':'Maintainance Cost'}),
@@ -64,7 +65,7 @@ class ExpenseForm(forms.ModelForm):
 class Recondition_Form(forms.ModelForm):
     class Meta:
         model = Recondition
-        fields = ('recondition_name', 'number', 'Temporary_address', 'District', 'profile_pic')
+        fields = ('recondition_name', 'number', 'Temporary_address', 'District', 'profile_pic', 'long', 'lat')
 
         widgets = {
             'recondition_name':forms.TextInput(attrs = {'class':'form-control', 'placeholder':'Reason of Expenses'}),
@@ -72,6 +73,8 @@ class Recondition_Form(forms.ModelForm):
             'Temporary_address':forms.TextInput(attrs = {'class':'form-control', 'placeholder':'Temporary Address'}),
             'District':forms.TextInput(attrs = {'class':'form-control', 'placeholder':'District'}),
             'profile_pic':forms.FileInput(attrs = {'class':'form-control'}),
+            'long':forms.TextInput(attrs = {'class':'form-control', 'placeholder':'Longitude'}),
+            'lat':forms.TextInput(attrs = {'class':'form-control', 'placeholder':'Lattitude'}),
         }
 
 class CommisionForm(forms.ModelForm):
@@ -82,4 +85,17 @@ class CommisionForm(forms.ModelForm):
         widgets = {
             'vehicle':forms.Select(attrs = {'class':'form-control'}),
             'rate':forms.NumberInput(attrs = {'class':'form-control'}),
+        }
+
+class ExchangeForm(forms.ModelForm):
+    class Meta:
+        model = Exchange
+        fields = ('name', 'number', 'bike_name', 'detail' , 'image')
+
+        widgets = {
+            'name':forms.TextInput(attrs = {'class':'form-control m-1' , 'placeholder':'Full Name'}),
+            'number':forms.NumberInput(attrs = {'class':'form-control m-1', 'placeholder':'Phone Number'}),
+            'bike_name':forms.TextInput(attrs = {'class':'form-control m-1', 'placeholder':'Bike Name'}),
+            'detail':forms.Textarea(attrs = {'class':'form-control m-1', 'placeholder':'Details.. BIke number plate rum km'}),
+            'image':forms.FileInput(attrs = {'class':'form-control m-1'}),
         }

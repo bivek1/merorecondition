@@ -61,6 +61,17 @@
           <span class="nav-link-text ms-1">Total Purchase</span>
         </a>
       </li>
+      
+      <li class="nav-item">
+        {%url 'recond:report' as homepage%}
+        <a class="nav-link text-white {%if request.path == homepage%} active bg-gradient-primary {%endif%} " href="{{homepage}}">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
+          </div>
+          <span class="nav-link-text ms-1">Report</span>
+        </a>
+      </li>
+
       <li class="nav-item">
         {%url 'recond:commision' as homepage%}
         <a class="nav-link text-white {%if request.path == homepage%} active bg-gradient-primary {%endif%}" href="{{homepage}}">
@@ -71,12 +82,12 @@
         </a>
       </li>
       <li class="nav-item">
-        {%url 'recond:report' as homepage%}
-        <a class="nav-link text-white {%if request.path == homepage%} active bg-gradient-primary {%endif%} " href="{{homepage}}">
+        {%url 'recond:exchange' as homepage%}
+        <a class="nav-link text-white {%if request.path == homepage%} active bg-gradient-primary {%endif%}" href="{{homepage}}">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
           </div>
-          <span class="nav-link-text ms-1">Report</span>
+          <span class="nav-link-text ms-1">Exchange Offer</span>
         </a>
       </li>
      

@@ -6,12 +6,26 @@ from django.views import View
 from .models import Blog, Category, Commision, Order, Recondition, Vehicle, Comment, Contact
 from django.views.generic import TemplateView, ListView
 from django.contrib.auth import logout, authenticate, login
+from django.urls import reverse_lazy
+from django.contrib.auth.views import PasswordResetView
+from django.contrib.messages.views import SuccessMessageMixin
+from recond.forms import ExchangeForm
+
 # Create your views here.
 class Homepage(TemplateView):
+    
+    
 
     template_name = "homepage.html"
 
     def get(self, request, *agrs,**kwargs):
+        if request.user.is_authenticated:
+            if request.user.user_type == "owner":
+                return HttpResponseRedirect(reverse('owner:homepage'))
+            elif request.user.user_type == "recondition":
+                return HttpResponseRedirect(reverse('recond:homepage'))
+            else:
+                return HttpResponseRedirect(reverse('customer:homepage'))
         category = Category.objects.all()[:6]
         latest = Vehicle.objects.all()[:6]
         houses = Recondition.objects.all()[:6]
@@ -159,9 +173,9 @@ def order(request, id):
             messages.error(request,"Please Add All the Information")
         else:
             if request.user.is_authenticated:
-                Order.objects.create(name = name, number= number, address = address, user = request.user)
+                Order.objects.create(name = name, number= number, address = address, user = request.user, vehicle =vehicle)
             else:
-                Order.objects.create(name = name, number= number, address = address)
+                Order.objects.create(name = name, number= number, address = address, vehicle =vehicle )
             messages.success(request, "Succesfully Ordered. Wait for the Call")
     return render(request, 'order.html', dist)
 
@@ -194,6 +208,45 @@ class Earn(TemplateView):
 
         return render(request, self.template_name, dist)
 
+
+# Reset Password
+class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
+    template_name = 'users/password_reset.html'
+    email_template_name = 'users/password_reset_email.html'
+    subject_template_name = 'users/password_reset_subject'
+    success_message = "We've emailed you instructions for setting your password, " \
+                      "if an account exists with the email you entered. You should receive them shortly." \
+                      " If you don't receive an email, " \
+                      "please make sure you've entered the address you registered with, and check your spam folder."
+    success_url = reverse_lazy('recon:homepage')
+
+def ExchangeView(request, slug):
+    template_name = "exchange.html"
+    vehicle = Vehicle.objects.get(slug = slug)
+    form = ExchangeForm()
+    
+    dist = {
+        'form':form,
+        'vehicle':vehicle
+    }
+    
+    if request.method == 'POST':
+        form = ExchangeForm(request.POST, request.FILES)
+        if form.is_valid():
+            aa = form.save(commit = False)
+            aa.vehicle = vehicle
+            aa.save()
+            messages.success(request, "Successfully Sent Exchange Detail. We will call you ASAP")
+            return HttpResponseRedirect(reverse('recon:exchange', args=[slug]))
+        else:
+            messages.success(request, "Something Went Wrong")
+            return HttpResponseRedirect(reverse('recon:exchange', args=[slug]))
+       
+
+    return render(request, template_name, dist)
+
+    
+       
 
     
     

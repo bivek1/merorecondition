@@ -1,5 +1,6 @@
 from django.urls import path
 from .import views
+from django.contrib.auth import views as auth_views
 
 app_name = "recon"
 
@@ -19,5 +20,7 @@ urlpatterns = [
     path('Blog', views.BlogV, name = "blog"),
     path('blogDetails/<slug:slug>', views.blogDetails, name = "blogD"),
     path('earn', views.Earn.as_view(), name = "earn"),
-
+    path('exchange/<slug:slug>', views.ExchangeView, name = "exchange"),
+  
+   
 ]

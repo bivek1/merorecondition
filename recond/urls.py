@@ -14,11 +14,13 @@ urlpatterns = [
     path('orders', views.OrderShow.as_view(), name = "order" ),
     path('comment', views.CommentShow.as_view(), name = "comment" ),
     path('editVehicle/<int:id>', views.Editvehicle, name = "editvehicle"),
+    path('deleteVehicle/<int:id>', views.deleteVehicle, name = "delete"),
     path('addSale/<int:id>', views.addToSold, name ="addSale"),
     path('profile', views.Profile.as_view(), name = "profile"),
     path('recondition-profile', views.Rec_Profile.as_view(), name = "rec_profile"),
     path('add-to-sold/<int:id>', views.addToSold, name = "addToSold"),
     path('deleteImage/<int:id>', views.deleteImage, name="deleteImage"),
     path('commision',views.CommisionV.as_view(), name = "commision"),
+    path('exchange', views.exchangeView, name ="exchange"),
 
 ]

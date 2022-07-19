@@ -1,6 +1,4 @@
-from distutils.command.upload import upload
-from itertools import product
-from urllib import request
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.dispatch import receiver
@@ -38,6 +36,8 @@ class Recondition(models.Model):
     verified = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add= True)
     expire_on = models.DateField(blank= True, null = True)
+    long = models.CharField(max_length = 30, blank = True, null = True)
+    lat = models.CharField(max_length = 30, blank = True, null = True)
     call = models.IntegerField()
     objects = models.Manager()
     
@@ -116,6 +116,11 @@ class Vehicle(models.Model):
     def get_absolute_url(self):
         return reverse("recon:vehicleD", args=[self.slug])
 
+    def profit(self):
+        if self.maintainance_cost:
+            return self.sold_price - self.cost_price - self.maintainance_cost
+        else:
+            return self.sold_price - self.cost_price
     def __str__(self):
         return self.name
 
@@ -221,7 +226,19 @@ class Contact(models.Model):
     def __str__(self):
         return self.fullname
 
+class Exchange(models.Model):
+    id = models.AutoField(primary_key= True)
+    vehicle = models.ForeignKey(Vehicle, related_name='vehicle_exchange', on_delete=models.CASCADE)
+    number = models.BigIntegerField()
+    name = models.CharField(max_length=200)
+    bike_name = models.CharField(max_length=200)
+    image = models.ImageField(upload_to="exchange")
+    detail = models.CharField(max_length=400)
 
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.name
 
 @receiver(post_save, sender=CustomUser)
 def create_user_profile(sender, instance, created, **kwargs):

@@ -58,12 +58,19 @@
                         </span>
                           
                         {% else %}
-                        <span class="badge bg-warning">
+                        <span class="badge bg-warning mb-2">
                           In House
                         </span>
                            
                         {% endif %}
-                          
+                        {% if i.sold_status%}
+                       
+                        {%else%} 
+                        <br>
+                          <a href="{%url 'recond:addSale' i.id%}">
+                            <button type="submit" class="btn btn-primary">Add To Sold</button>
+                          </a>
+                        {% endif %}
                       </p>
                       <div class="flex pt-2">
                         <a href="{%url 'recond:editvehicle' i.id%}">
@@ -86,7 +93,10 @@
                               </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                              <button type="button" class="btn btn-primary">Proceed</button>
+                              <a href="{%url 'recond:delete' i.id%}">
+                                <button type="button" class="btn btn-primary">Proceed</button>
+                              </a>
+                             
                             </div>
                           </div>
                         </div>

@@ -28,7 +28,14 @@
         <p>Your Vehicle that gives Commision to Third Party</p>
         <hr>
         <form action="" method="post">
-            {{form}}
+            <select name="vehicle" id="" class="form-control mb-2">
+              
+              {% for i in vehi  %}
+                  <option value="{{i.id}}" class="form-control">{{i.name}}</option>
+              {% endfor %}
+                
+            </select>
+            <input class="form-control" type="number" name="rate" id="" placeholder="Commission in percentage">
             {% csrf_token %}
             <button type="submit" class="btn btn-primary mt-2">
                 Add Commision

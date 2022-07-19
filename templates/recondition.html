@@ -36,6 +36,29 @@
                             <i class="fa fa-phone"></i> Call
                         </button>
                     </a>
+                    <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <i class="fa fa-location"></i>
+                        Location in Map
+                    </button>
+                    <!-- Location Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">{{recon.recondition_name}}</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <iframe src = "https://maps.google.com/maps?q={{recon.long}},{{recon.lat}}&hl=es;z=14&amp;output=embed" width="100%" height="400"></iframe>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                           
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    <!-- Location Modal End -->
                 </div>   
             </div>
         </div>

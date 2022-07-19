@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'recondition.LoginCheckMiddleware.LoginCheckMiddleWare',
+    # 'recondition.LoginCheckMiddleware.LoginCheckMiddleWare',
 ]
 
 ROOT_URLCONF = 'recondition.urls'
@@ -189,3 +189,10 @@ CKEDITOR_CONFIGS = {
         'width': 'auto',
     },
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "watqu@gmail.com"
+EMAIL_HOST_PASSWORD = "Heyiknow777"

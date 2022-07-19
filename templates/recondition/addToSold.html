@@ -42,9 +42,9 @@
                     <div class="modal-body">
                         <form action="" method="post">
                           <label for="date">Sold Date</label>
-                          <input type="date" class="form-control" name="{{i.id}}date" style="border:1px solid black;">
+                          <input type="date" class="form-control" name="date" value="{{date}}" style="border:1px solid black;">
                           <label for="price">Selling Price</label>
-                          <input type="number" class="form-control" name = "{{i.id}}price" placeholder="1400000" style="border:1px solid black;">
+                          <input type="number" class="form-control" name = "price" placeholder="1400000" style="border:1px solid black;">
                           {% csrf_token %}
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Confirm</button>

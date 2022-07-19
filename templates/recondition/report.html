@@ -63,11 +63,29 @@
              
             </form>
           </div>
-        <h5>Gross Report</h5>
-        <h6>Total Purchase: Rs. {{total_purchase.cost_price__sum}}</h6>
-        <h6>Total Sale: Rs. {{total_sale.sold_price__sum}}</h6>
-        <h6>Total Expenses: Rs.{{total_expenses.cost__sum}}</h6>
-        <h6>Total Maintainance Cost: Rs. {{total_maintainace.maintainance_cost__sum}}</h6>
+          <div class="row">
+            <h5>Gross Report</h5>
+            <div class="col-12 col-md-4">
+              <h6>Total Purchase: Rs. {{total_purchase.cost_price__sum}}</h6>
+            </div>
+            <div class="col-12 col-md-4">
+              <h6>Total Sale: Rs. {{total_sale.sold_price__sum}}</h6>
+            </div>
+            <div class="col-12 col-md-4">
+              <h6>Total Expenses: Rs.{{total_expenses.cost__sum}}</h6>
+            </div>
+            <div class="col-12 col-md-4">
+              <h6>Total Maintainance Cost: Rs. {{total_maintainace.maintainance_cost__sum}}</h6>
+            </div>
+            <div class="col-12">
+              <h6>Total Profit: Rs. {{profit}}</h6>
+            </div>
+          </div>
+        
+       
+       
+       
+       
         <hr>
 
         <div class="purchaseReport">
@@ -188,7 +206,7 @@
                           <tr>
                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Cost Price</th>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Plate No.</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Maintainance Cost</th>
                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Purchase Date</th>
                             <th class="text-uppercase text-primary text-xxs font-weight-bolder  ps-2">
                               <b>Sold Date</b></th>
@@ -208,7 +226,7 @@
                                 <p class="text-sm font-weight-bold mb-0">Rs. {{i.cost_price}}</p>
                               </td>
                               <td>
-                                <span class="text-xs font-weight-bold">{{i.plate_no}}</span>
+                                <span class="text-xs font-weight-bold">{{i.maintainance_cost}}</span>
                               </td>
                               <td>
                                 <span class="text-xs font-weight-bold">{{i.purchase_date}}</span>
@@ -220,7 +238,7 @@
                                 <span class="text-xs font-weight-bold">{{i.sold_price}}</span>
                               </td>
                               <td>
-                                <span class="text-xs font-weight-bold text-primary">{{i.sold_price}} - {{i.cost_price}}</span>
+                                <span class="text-xs font-weight-bold text-primary">{{i.profit}}</span>
                               </td>
                              
                             </tr>
